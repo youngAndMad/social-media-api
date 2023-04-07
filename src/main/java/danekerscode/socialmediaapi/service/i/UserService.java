@@ -1,0 +1,12 @@
+package danekerscode.socialmediaapi.service.i;
+
+import danekerscode.socialmediaapi.model.User;
+import danekerscode.socialmediaapi.service.i.ParentService;
+
+import java.util.Optional;
+
+public interface UserService extends ParentService<User> {
+    Optional<User> findByEmail(String email);
+    void updatePassword(String code, String newPassword);
+    Optional<User> findByCode(String code);
+}

@@ -1,7 +1,6 @@
 package danekerscode.socialmediaapi.payload.request;
 
 
-import danekerscode.socialmediaapi.model.Address;
 
 public record UserRequest(
         String firstName,
@@ -10,7 +9,7 @@ public record UserRequest(
         String password,
         Integer age,
         String gender,
-        Address address) implements Request {
+        AddressRequest address) implements Request {
 }
 
 

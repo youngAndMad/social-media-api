@@ -1,8 +1,8 @@
 package danekerscode.socialmediaapi.payload.request;
 
-public record CreateChannelRequest(
+public record ChannelRequest(
         String name,
         String description,
         String content,
-        Integer owner) {
+        Integer owner) implements Request{
 }

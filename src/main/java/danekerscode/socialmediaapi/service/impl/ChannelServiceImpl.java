@@ -1,26 +1,66 @@
 package danekerscode.socialmediaapi.service.impl;
 
+import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.model.Channel;
-import danekerscode.socialmediaapi.payload.request.CreateChannelRequest;
+import danekerscode.socialmediaapi.model.Post;
+import danekerscode.socialmediaapi.payload.request.ChannelRequest;
+import danekerscode.socialmediaapi.payload.request.PostRequest;
+import danekerscode.socialmediaapi.payload.request.Request;
 import danekerscode.socialmediaapi.resository.ChannelRepository;
+import danekerscode.socialmediaapi.resository.PostRepository;
 import danekerscode.socialmediaapi.resository.UserRepository;
 import danekerscode.socialmediaapi.service.i.ChannelService;
+import danekerscode.socialmediaapi.service.i.PostService;
+import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+import static danekerscode.socialmediaapi.utils.Converter.toChannel;
+import static danekerscode.socialmediaapi.utils.Converter.toPost;
+
 @Service
 @RequiredArgsConstructor
-public class ChannelServiceImpl implements ChannelService {
+public class ChannelServiceImpl implements ChannelService,
+        PostService {
 
     private final ChannelRepository channelRepository;
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final CustomValidator customValidator;
+
 
     @Override
-    public void addPost() {
-        // todo
+    public void addPost(PostRequest postRequest) {
+        customValidator.validatePost(postRequest);
+        postRepository.save(toPost(postRequest, channelRepository.findById(postRequest.ownerChannelId()).get()));
+    }
+
+    @Override
+    public void deletePostById(Integer id) {
+        postRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Post> getPostsByChannelId(Integer id) {
+       return postRepository.findAllByChannelId(id);
+    }
+
+    @Override
+    public void updatePost(PostRequest postRequest , Integer id) {
+        customValidator.validatePost(postRequest);
+        var post = postRepository.findById(id).orElseThrow();
+        post.setBody(postRequest.body());
+        post.setTitle(postRequest.title());
+        postRepository.save(post);
+    }
+
+    @Override
+    public Post getPostById(Integer id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new EntityPropertiesException("invalid post id"));
     }
 
     @Override
@@ -30,15 +70,9 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Channel save(Object t) {
-        CreateChannelRequest request = (CreateChannelRequest) t;
-        Channel channel = Channel.builder()
-                .name(request.name())
-                .content(request.content())
-                .description(request.description())
-                .owner(userRepository.findById(request.owner()).orElseThrow())
-                .build();
-
-        return channelRepository.save(channel);
+        ChannelRequest request = (ChannelRequest) t;
+        customValidator.validateChannel(request);
+        return channelRepository.save(toChannel(request, userRepository.findById(request.owner()).get()));
     }
 
     @Override
@@ -52,12 +86,12 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public void update(Channel channel) {
-        ChannelService.super.update(channel);
+    public void update(Request request, Integer id) {
+        ChannelService.super.update(request, id);
     }
 
     @Override
     public List<Channel> getAll() {
-        return  channelRepository.findAll();
+        return channelRepository.findAll();
     }
 }

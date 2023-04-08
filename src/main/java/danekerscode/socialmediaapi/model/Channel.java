@@ -1,10 +1,12 @@
 package danekerscode.socialmediaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import danekerscode.socialmediaapi.model.constants.ChannelContent;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.*;
 
 import static java.time.LocalDateTime.now;
 
@@ -18,13 +20,21 @@ public class Channel {
     private Integer id;
     private String name;
     private String description;
-    private String content;
-
-    @ManyToOne
-    @JsonIgnore
-    private User owner;
+    @Enumerated(EnumType.STRING)
+    private ChannelContent content;
     private LocalDateTime createdAt;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private User owner;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id" , referencedColumnName = "id")
+    private Image image;
+
+    @OneToMany(mappedBy = "channel" , cascade = CascadeType.ALL)
+    private List<Post> posts;
 
 
     @PrePersist

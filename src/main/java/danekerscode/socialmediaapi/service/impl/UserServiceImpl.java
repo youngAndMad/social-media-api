@@ -2,35 +2,37 @@ package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.model.User;
-import danekerscode.socialmediaapi.model.utils.GENDER;
-import danekerscode.socialmediaapi.payload.request.RegistrationRequest;
+import danekerscode.socialmediaapi.payload.request.Request;
+import danekerscode.socialmediaapi.payload.request.UserRequest;
+import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
 import danekerscode.socialmediaapi.resository.UserRepository;
+import danekerscode.socialmediaapi.service.i.MailService;
 import danekerscode.socialmediaapi.service.i.UserService;
+import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
+
+import static danekerscode.socialmediaapi.utils.Converter.toUpdatedUser;
+import static danekerscode.socialmediaapi.utils.Converter.toUser;
 
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final CustomValidator customValidator;
+    private final MailService mailService;
+
 
     @Override
     public User save(Object request) {
-        RegistrationRequest registrationRequest = (RegistrationRequest) request;
-        User user = User.builder()
-                .firstName(registrationRequest.firstName())
-                .lastName(registrationRequest.lastName())
-                .email(registrationRequest.email())
-                .gender(GENDER.valueOf(registrationRequest.gender().toUpperCase(Locale.ROOT)))
-                .age(registrationRequest.age())
-                .password(registrationRequest.password())
-                .build();
-        return userRepository.save(user);
+        UserRequest userRequest = (UserRequest) request;
+        customValidator.validateUserRequest(userRequest);
+        mailService.sendGreeting(userRequest.email());
+        return userRepository.save(toUser(userRequest));
     }
 
     @Override
@@ -43,10 +45,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
-    @Override
-    public void update(User user) {
-        userRepository.save(user);
-    }
 
     @Override
     public List<User> getAll() {
@@ -62,7 +60,16 @@ public class UserServiceImpl implements UserService {
     public void updatePassword(String code, String newPassword) {
         var user = findByCode(code).orElseThrow(() -> new AuthenticationException("invalid code"));
         user.setPassword(newPassword);
-        this.update(user);
+        user.setCode(null);
+        this.userRepository.save(user);
+    }
+
+    @Override
+    public void update(Request request, Integer id) {
+        customValidator.validateUpdateUserRequest((UserUpdateRequest) request);
+        var user = userRepository.findById(id).orElseThrow();
+        toUpdatedUser((UserUpdateRequest) request, user );
+        this.userRepository.save(user);
     }
 
     @Override

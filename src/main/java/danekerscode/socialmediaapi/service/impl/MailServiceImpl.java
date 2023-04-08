@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.service;
+package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.payload.request.MailMessageRequest;
 import danekerscode.socialmediaapi.service.i.MailService;

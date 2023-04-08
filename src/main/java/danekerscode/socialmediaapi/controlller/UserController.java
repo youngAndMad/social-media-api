@@ -1,26 +1,37 @@
 package danekerscode.socialmediaapi.controlller;
 
-import danekerscode.socialmediaapi.service.impl.UserServiceImpl;
-import lombok.Getter;
+import danekerscode.socialmediaapi.payload.request.UserRequest;
+import danekerscode.socialmediaapi.service.i.UserService;
+import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("user")
 public class UserController {
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAll(){
+    public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(
                 userService.getAll(),
                 HttpStatus.OK
         );
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        userService.deleteByID(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<?> update(@RequestBody UserRequest userRequest,
+                                    @PathVariable("id") Integer id) {
+        userService.update(userRequest , id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
 }

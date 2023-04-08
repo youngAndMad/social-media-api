@@ -1,13 +1,11 @@
 package danekerscode.socialmediaapi.controlller;
 
 import danekerscode.socialmediaapi.model.Image;
-import danekerscode.socialmediaapi.model.utils.ImageAddress;
+import danekerscode.socialmediaapi.model.constants.ImageAddress;
 import danekerscode.socialmediaapi.service.i.ImageService;
-import danekerscode.socialmediaapi.service.impl.ImageServiceImpl;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,7 @@ import java.io.ByteArrayInputStream;
 @RequiredArgsConstructor
 public class ImageController {
 
-    private final ImageServiceImpl imageService;
+    private final ImageService imageService;
 
     @PostMapping("/{address}/{id}")
     public ResponseEntity<?> save(@PathVariable String address,

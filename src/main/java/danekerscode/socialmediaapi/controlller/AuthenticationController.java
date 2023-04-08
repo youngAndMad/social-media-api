@@ -1,10 +1,10 @@
 package danekerscode.socialmediaapi.controlller;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
-import danekerscode.socialmediaapi.payload.request.RegistrationRequest;
+import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
-import danekerscode.socialmediaapi.service.MailServiceImpl;
-import danekerscode.socialmediaapi.service.impl.UserServiceImpl;
+import danekerscode.socialmediaapi.service.i.MailService;
+import danekerscode.socialmediaapi.service.i.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +20,12 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("authentication")
 @RequiredArgsConstructor
 public class AuthenticationController {
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final CustomValidator validator;
-    private final MailServiceImpl mailServiceImpl;
+    private final MailService mailServiceImpl;
 
     @PostMapping("registration")
-    public ResponseEntity<?> registration(@RequestBody @Valid RegistrationRequest request) {
-        validator.validateRegistrationRequest(request);
-        mailServiceImpl.sendGreeting(request.email());
+    public ResponseEntity<?> registration(@RequestBody @Valid UserRequest request) {
         return new ResponseEntity<>(
                 CustomResponse.builder()
                         .timeStamp(now())

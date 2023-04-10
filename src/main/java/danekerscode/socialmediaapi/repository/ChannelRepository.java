@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.resository;
+package danekerscode.socialmediaapi.repository;
 
 import danekerscode.socialmediaapi.model.Channel;
 import org.springframework.data.jpa.repository.JpaRepository;

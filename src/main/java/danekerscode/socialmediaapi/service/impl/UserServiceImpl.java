@@ -5,7 +5,7 @@ import danekerscode.socialmediaapi.model.User;
 import danekerscode.socialmediaapi.payload.request.Request;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
-import danekerscode.socialmediaapi.resository.UserRepository;
+import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.i.MailService;
 import danekerscode.socialmediaapi.service.i.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;

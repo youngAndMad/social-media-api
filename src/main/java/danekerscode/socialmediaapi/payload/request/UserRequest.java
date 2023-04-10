@@ -9,6 +9,7 @@ public record UserRequest(
         String password,
         Integer age,
         String gender,
+        Boolean isPrivateAccount,
         AddressRequest address) implements Request {
 }
 

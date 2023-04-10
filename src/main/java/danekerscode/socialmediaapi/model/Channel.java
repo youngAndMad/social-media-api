@@ -1,7 +1,7 @@
 package danekerscode.socialmediaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import danekerscode.socialmediaapi.model.constants.ChannelContent;
+import danekerscode.socialmediaapi.constants.ChannelContent;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,7 +1,7 @@
-package danekerscode.socialmediaapi.controlller;
+package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.model.Image;
-import danekerscode.socialmediaapi.model.constants.ImageAddress;
+import danekerscode.socialmediaapi.constants.ImageAddress;
 import danekerscode.socialmediaapi.service.i.ImageService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

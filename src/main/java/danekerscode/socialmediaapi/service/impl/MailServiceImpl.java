@@ -17,7 +17,7 @@ public class MailServiceImpl implements MailService {
     private final JdbcTemplate jdbcTemplate;
 
     public void sendGreeting(String email){
-        mailSender.send(createMessage(new MailMessageRequest(email, "hello", "welcome")));
+        mailSender.send(createMessage(new MailMessageRequest(email, "hello", "маған дискретка унамайды")));
     }
 
     public void sendCodeToUpdatePassword(String email){

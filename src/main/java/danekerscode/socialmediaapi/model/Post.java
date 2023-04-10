@@ -15,7 +15,6 @@ public class Post {
     private Integer id;
     private String title;
     private String body;
-    private Integer likes;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore

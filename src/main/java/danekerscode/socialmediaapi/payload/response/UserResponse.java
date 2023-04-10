@@ -1,6 +1,6 @@
 package danekerscode.socialmediaapi.payload.response;
 
-import danekerscode.socialmediaapi.model.constants.GENDER;
+import danekerscode.socialmediaapi.constants.GENDER;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

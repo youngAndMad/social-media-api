@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.controlller;
+package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;

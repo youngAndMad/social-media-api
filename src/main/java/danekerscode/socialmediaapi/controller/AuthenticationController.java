@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.controlller;
+package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.payload.request.UserRequest;

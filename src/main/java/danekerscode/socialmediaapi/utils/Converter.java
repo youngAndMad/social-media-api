@@ -1,20 +1,22 @@
 package danekerscode.socialmediaapi.utils;
 
+import danekerscode.socialmediaapi.constants.ChannelContent;
+import danekerscode.socialmediaapi.constants.GENDER;
 import danekerscode.socialmediaapi.model.*;
-import danekerscode.socialmediaapi.model.constants.ChannelContent;
-import danekerscode.socialmediaapi.model.constants.GENDER;
-import danekerscode.socialmediaapi.payload.request.ChannelRequest;
-import danekerscode.socialmediaapi.payload.request.PostRequest;
-import danekerscode.socialmediaapi.payload.request.UserRequest;
-import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
+import danekerscode.socialmediaapi.payload.request.*;
 import danekerscode.socialmediaapi.payload.response.UserResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 
+import static java.time.LocalDateTime.now;
+
 public class Converter {
+
     public static User toUser(UserRequest userRequest) {
         return User.builder()
                 .firstName(userRequest.firstName())
@@ -23,6 +25,7 @@ public class Converter {
                 .gender(GENDER.valueOf(userRequest.gender().toUpperCase(Locale.ROOT)))
                 .age(userRequest.age())
                 .password(userRequest.password())
+                .isPrivateAccount(userRequest.isPrivateAccount() == null ? Boolean.FALSE : userRequest.isPrivateAccount())
                 .address(
                         Address.builder()
                                 .country(userRequest.address().country())
@@ -68,7 +71,6 @@ public class Converter {
                 .title(request.title())
                 .body(request.body())
                 .channel(channel)
-                .likes(0)
                 .images(new ArrayList<>())
                 .build();
     }
@@ -82,4 +84,25 @@ public class Converter {
                 .gender(user.getGender())
                 .build();
     }
+
+    public static Message toMessage(MessageRequest request, User user, Chat chat) {
+        return Message.builder()
+                .text(request.text())
+                .sentAt(now())
+                .senderFullName(user.getFirstName() + " " + user.getLastName())
+                .sender(user)
+                .chat(chat)
+                .build();
+    }
+
+    public static Chat toChat(ChatRequest chatRequest, List<User> userList) {
+        return Chat.builder()
+                .createdAt(now())
+                .type(chatRequest.type())
+                .messages(new ArrayList<>())
+                .users(new HashSet<>(userList))
+                .lastMessage("send message to start chat")
+                .build();
+    }
+
 }

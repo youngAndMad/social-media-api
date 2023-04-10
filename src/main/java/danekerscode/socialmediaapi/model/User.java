@@ -1,11 +1,12 @@
 package danekerscode.socialmediaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import danekerscode.socialmediaapi.model.constants.GENDER;
+import danekerscode.socialmediaapi.constants.GENDER;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -23,6 +24,10 @@ public class User {
     private String email;
     private String password;
     private Integer age;
+    private Boolean isPrivateAccount;
+    @JsonIgnore
+    private String code;
+
     @Enumerated(EnumType.STRING)
     private GENDER gender;
 
@@ -34,9 +39,6 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id" , referencedColumnName = "id")
     private Address address;
-
-    @JsonIgnore
-    private String code;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<Channel> channels;
@@ -54,6 +56,17 @@ public class User {
             joinColumns = @JoinColumn(name = "first_user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "second_user_id", referencedColumnName = "id"))
     private List<User> blackList;
+
+    @ManyToMany
+    @JoinTable(
+            name = "chats",
+            joinColumns = @JoinColumn(name = "chat_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<Chat> chats;
+
+    @OneToMany(mappedBy = "sender")
+    private List<Message> messages;
 
 
 

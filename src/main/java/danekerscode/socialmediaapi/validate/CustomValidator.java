@@ -1,15 +1,13 @@
 package danekerscode.socialmediaapi.validate;
 
+import danekerscode.socialmediaapi.constants.ChannelContent;
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.exception.RegistratoinException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
-import danekerscode.socialmediaapi.model.constants.ChannelContent;
-import danekerscode.socialmediaapi.payload.request.ChannelRequest;
-import danekerscode.socialmediaapi.payload.request.PostRequest;
-import danekerscode.socialmediaapi.payload.request.UserRequest;
-import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
-import danekerscode.socialmediaapi.resository.ChannelRepository;
-import danekerscode.socialmediaapi.resository.UserRepository;
+import danekerscode.socialmediaapi.payload.request.*;
+import danekerscode.socialmediaapi.repository.ChannelRepository;
+import danekerscode.socialmediaapi.repository.ChatRepository;
+import danekerscode.socialmediaapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +15,16 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import static danekerscode.socialmediaapi.constants.ChatType.GROUP_CHAT;
+import static danekerscode.socialmediaapi.constants.ChatType.PRIVATE_CHAT;
+
 @Component
 @RequiredArgsConstructor
 public class CustomValidator {
 
     private final UserRepository repository;
     private final ChannelRepository channelRepository;
+    private final ChatRepository chatRepository;
 
     public void validateUserRequest(UserRequest request) {
         StringBuilder sb = new StringBuilder();
@@ -69,7 +71,7 @@ public class CustomValidator {
     public void validateChannel(ChannelRequest request) {
         var user = repository.findById(request.owner());
         if (user.isEmpty())
-            throw new UserNotFoundException("owner with this id dont found");
+            throw new UserNotFoundException();
 
         if (Arrays.stream(ChannelContent.values()).noneMatch(content ->
                 content.name().equals(request.content().toUpperCase(Locale.ROOT))))
@@ -78,11 +80,30 @@ public class CustomValidator {
     }
 
     public void validatePost(PostRequest postRequest) {
-        if (postRequest.body().isEmpty() || postRequest.title().isEmpty()){
+        if (postRequest.body().isEmpty() || postRequest.title().isEmpty()) {
             throw new EntityPropertiesException("specify all properties");
         }
-        if (channelRepository.findById(postRequest.ownerChannelId()).isEmpty()){
+        if (channelRepository.findById(postRequest.ownerChannelId()).isEmpty()) {
             throw new EntityPropertiesException("invalid id for owner channel id");
         }
+    }
+
+    public void validateMessage(MessageRequest request) {
+        if (chatRepository.findById(request.chatId()).isEmpty())
+            throw new EntityPropertiesException("invalid chat id");
+
+        if (repository.findById(request.sender()).isEmpty())
+            throw new UserNotFoundException();
+
+        if (request.text().trim().isBlank())
+            throw new EntityPropertiesException("invalid message");
+    }
+
+    public void validateChat(ChatRequest chatRequest) {
+        if (chatRequest.type() == PRIVATE_CHAT && chatRequest.users().size() > 2
+                || chatRequest.type() == GROUP_CHAT && chatRequest.users().size() <= 2)
+            throw new EntityPropertiesException("invalid properties to start chat. " +
+                    "Check amount of users");
+
     }
 }

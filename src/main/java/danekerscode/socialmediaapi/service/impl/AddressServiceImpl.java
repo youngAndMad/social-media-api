@@ -1,7 +1,7 @@
 package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.model.Address;
-import danekerscode.socialmediaapi.resository.AddressRepository;
+import danekerscode.socialmediaapi.repository.AddressRepository;
 import danekerscode.socialmediaapi.service.i.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

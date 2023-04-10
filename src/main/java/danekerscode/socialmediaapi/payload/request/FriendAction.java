@@ -1,6 +1,6 @@
 package danekerscode.socialmediaapi.payload.request;
 
-import danekerscode.socialmediaapi.model.constants.Action;
+import danekerscode.socialmediaapi.constants.Action;
 import lombok.Data;
 
 @Data

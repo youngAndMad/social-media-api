@@ -1,18 +1,13 @@
-package danekerscode.socialmediaapi.controlller;
+package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.payload.request.FriendAction;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
-import danekerscode.socialmediaapi.payload.response.UserResponse;
 import danekerscode.socialmediaapi.service.i.FriendService;
 import danekerscode.socialmediaapi.service.i.UserService;
-import danekerscode.socialmediaapi.validate.CustomValidator;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

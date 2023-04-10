@@ -5,7 +5,7 @@ import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.payload.request.FriendAction;
 import danekerscode.socialmediaapi.payload.response.UserResponse;
 import danekerscode.socialmediaapi.payload.response.UserStatus;
-import danekerscode.socialmediaapi.resository.UserRepository;
+import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.i.FriendService;
 import danekerscode.socialmediaapi.utils.Converter;
 import lombok.RequiredArgsConstructor;
@@ -36,13 +36,13 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public void follow(FriendAction action) {
-        var user = userRepository.findById(action.getFirstUserId()).orElseThrow(() -> new UserNotFoundException("invalid first user id"));
+        var user = userRepository.findById(action.getFirstUserId()).orElseThrow(UserNotFoundException::new);
         if (!checkUser(action.getFirstUserId(), action.getSecondUserId(), this::getFriendListByUserId)) {
             action.setAccepted(Boolean.FALSE);
         } else {
             user.getFriendList()
                     .add(userRepository.findById(action.getSecondUserId())
-                            .orElseThrow(() -> new UserNotFoundException("invalid second user id")));
+                            .orElseThrow(UserNotFoundException::new));
             action.setAccepted(Boolean.TRUE);
         }
     }
@@ -50,46 +50,46 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public void unfollow(FriendAction action) {
-        var user = userRepository.findById(action.getFirstUserId()).orElseThrow(() -> new UserNotFoundException("invalid first user id"));
+        var user = userRepository.findById(action.getFirstUserId()).orElseThrow(UserNotFoundException::new);
         if (checkUser(action.getFirstUserId(), action.getSecondUserId(), this::getFriendListByUserId)) {
             action.setAccepted(Boolean.FALSE);
         } else {
             user.getFriendList()
                     .remove(userRepository.findById(action.getSecondUserId())
-                            .orElseThrow(() -> new UserNotFoundException("invalid second user id")));
+                            .orElseThrow(UserNotFoundException::new));
             action.setAccepted(Boolean.TRUE);
         }
     }
 
     @Override
     public void block(FriendAction action) {
-        var user = userRepository.findById(action.getFirstUserId()).orElseThrow(() -> new UserNotFoundException("invalid first user id"));
+        var user = userRepository.findById(action.getFirstUserId()).orElseThrow(UserNotFoundException::new);
         if (checkUser(action.getFirstUserId(), action.getSecondUserId(), this::getBlackListByUserId)) {
             action.setAccepted(Boolean.FALSE);
         } else {
             user.getBlackList()
                     .add(userRepository.findById(action.getSecondUserId())
-                            .orElseThrow(() -> new UserNotFoundException("invalid second user id")));
+                            .orElseThrow(UserNotFoundException::new));
             action.setAccepted(Boolean.TRUE);
         }
     }
 
     @Override
     public void unblock(FriendAction action) {
-        var user = userRepository.findById(action.getFirstUserId()).orElseThrow(() -> new UserNotFoundException("invalid first user id"));
+        var user = userRepository.findById(action.getFirstUserId()).orElseThrow(UserNotFoundException::new);
         if (!checkUser(action.getFirstUserId(), action.getSecondUserId(), this::getBlackListByUserId)) {
             action.setAccepted(Boolean.FALSE);
         } else {
             user.getBlackList().
                     remove(userRepository
-                            .findById(action.getSecondUserId()).orElseThrow(() -> new UserNotFoundException("user by id dont found")));
+                            .findById(action.getSecondUserId()).orElseThrow(UserNotFoundException::new));
             action.setAccepted(Boolean.TRUE);
         }
     }
 
     @Override
     public List<UserResponse> getFriendListByUserId(Integer id) {
-        var user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("user by id dont found"));
+        var user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         return user.getFriendList()
                 .stream()
                 .map(Converter::toUserResponse)
@@ -98,7 +98,7 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public List<UserResponse> getBlackListByUserId(Integer id) {
-        var user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("user by id dont found"));
+        var user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         return user.getBlackList()
                 .stream()
                 .map(Converter::toUserResponse)

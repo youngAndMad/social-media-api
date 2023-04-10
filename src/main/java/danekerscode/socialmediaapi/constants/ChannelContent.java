@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.model.constants;
+package danekerscode.socialmediaapi.constants;
 
 public enum ChannelContent {
     NEWS,

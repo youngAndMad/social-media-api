@@ -2,7 +2,7 @@ package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.model.Image;
 import danekerscode.socialmediaapi.constants.ImageAddress;
-import danekerscode.socialmediaapi.service.i.ImageService;
+import danekerscode.socialmediaapi.service.interfaces.ImageService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;

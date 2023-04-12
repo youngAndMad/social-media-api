@@ -3,7 +3,7 @@ package danekerscode.socialmediaapi.service.impl;
 import danekerscode.socialmediaapi.model.Image;
 import danekerscode.socialmediaapi.constants.ImageAddress;
 import danekerscode.socialmediaapi.repository.ImageRepository;
-import danekerscode.socialmediaapi.service.i.ImageService;
+import danekerscode.socialmediaapi.service.interfaces.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;

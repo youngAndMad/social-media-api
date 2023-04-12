@@ -1,6 +1,7 @@
 package danekerscode.socialmediaapi.validate;
 
 import danekerscode.socialmediaapi.constants.ChannelContent;
+import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.exception.RegistratoinException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
@@ -106,4 +107,14 @@ public class CustomValidator {
                     "Check amount of users");
 
     }
+
+   /* public void validateAuthenticationRequest(AuthenticationRequest authenticationRequest) {
+        if (authenticationRequest.email().trim().isBlank() ||
+                authenticationRequest.password().trim().isBlank())
+            throw new AuthenticationException("invalid properties");
+
+        var user = repository.findUserByEmail(authenticationRequest.email());
+        if (user.isEmpty())
+            throw new  AuthenticationException("invalid properties");
+    }*/
 }

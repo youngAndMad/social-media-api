@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.service.i;
+package danekerscode.socialmediaapi.service.interfaces;
 
 import danekerscode.socialmediaapi.model.Post;
 import danekerscode.socialmediaapi.payload.request.PostRequest;

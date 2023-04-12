@@ -1,7 +1,7 @@
 package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.payload.request.ChannelRequest;
-import danekerscode.socialmediaapi.service.i.ChannelService;
+import danekerscode.socialmediaapi.service.interfaces.ChannelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

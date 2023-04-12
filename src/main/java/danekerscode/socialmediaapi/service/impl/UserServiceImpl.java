@@ -6,10 +6,11 @@ import danekerscode.socialmediaapi.payload.request.Request;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
 import danekerscode.socialmediaapi.repository.UserRepository;
-import danekerscode.socialmediaapi.service.i.MailService;
-import danekerscode.socialmediaapi.service.i.UserService;
+import danekerscode.socialmediaapi.service.interfaces.MailService;
+import danekerscode.socialmediaapi.service.interfaces.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final CustomValidator customValidator;
     private final MailService mailService;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -32,7 +34,9 @@ public class UserServiceImpl implements UserService {
         UserRequest userRequest = (UserRequest) request;
         customValidator.validateUserRequest(userRequest);
         mailService.sendGreeting(userRequest.email());
-        return userRepository.save(toUser(userRequest));
+        var user = toUser(userRequest);
+       user.setPassword(passwordEncoder.encode(userRequest.password()));
+        return userRepository.save(user);
     }
 
     @Override

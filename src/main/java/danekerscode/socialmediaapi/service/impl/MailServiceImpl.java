@@ -1,7 +1,7 @@
 package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.payload.request.MailMessageRequest;
-import danekerscode.socialmediaapi.service.i.MailService;
+import danekerscode.socialmediaapi.service.interfaces.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.SimpleMailMessage;

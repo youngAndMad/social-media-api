@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.service.i;
+package danekerscode.socialmediaapi.service.interfaces;
 
 import danekerscode.socialmediaapi.payload.request.MailMessageRequest;
 import org.springframework.mail.SimpleMailMessage;

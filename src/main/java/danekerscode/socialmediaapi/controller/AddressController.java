@@ -2,7 +2,7 @@ package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
-import danekerscode.socialmediaapi.service.i.AddressService;
+import danekerscode.socialmediaapi.service.interfaces.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

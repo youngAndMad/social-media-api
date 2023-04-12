@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
+import static danekerscode.socialmediaapi.constants.Role.ROLE_USER;
 import static java.time.LocalDateTime.now;
 
 public class Converter {
@@ -25,6 +26,7 @@ public class Converter {
                 .gender(GENDER.valueOf(userRequest.gender().toUpperCase(Locale.ROOT)))
                 .age(userRequest.age())
                 .password(userRequest.password())
+                .role(ROLE_USER)
                 .isPrivateAccount(userRequest.isPrivateAccount() == null ? Boolean.FALSE : userRequest.isPrivateAccount())
                 .address(
                         Address.builder()

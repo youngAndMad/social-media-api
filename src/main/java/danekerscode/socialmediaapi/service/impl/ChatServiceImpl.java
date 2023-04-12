@@ -3,10 +3,11 @@ package danekerscode.socialmediaapi.service.impl;
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.model.Chat;
+import danekerscode.socialmediaapi.model.User;
 import danekerscode.socialmediaapi.payload.request.ChatRequest;
 import danekerscode.socialmediaapi.repository.ChatRepository;
 import danekerscode.socialmediaapi.repository.UserRepository;
-import danekerscode.socialmediaapi.service.i.ChatService;
+import danekerscode.socialmediaapi.service.interfaces.ChatService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,13 +30,14 @@ public class ChatServiceImpl implements ChatService {
     public Chat save(Object t) {
         ChatRequest chatRequest = (ChatRequest) t;
         customValidator.validateChat(chatRequest);
-        return
-                chatRepository.save(toChat(chatRequest, new ArrayList<>() {{
-                    chatRequest.users()
-                            .forEach(user -> add(userRepository.findById(user)
-                                    .orElseThrow(UserNotFoundException::new))
-                            );
-                }}));
+        List<User> users = new ArrayList<>() {{
+            chatRequest.users()
+                    .forEach(user -> add(userRepository.findById(user)
+                            .orElseThrow(UserNotFoundException::new))
+                    );
+        }};
+        Chat chat = toChat(chatRequest , users);
+        return chatRepository.save(chat);
     }
 
     @Override

@@ -2,8 +2,8 @@ package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.payload.request.ChatRequest;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
-import danekerscode.socialmediaapi.service.i.ChatService;
-import danekerscode.socialmediaapi.service.i.MessageService;
+import danekerscode.socialmediaapi.service.interfaces.ChatService;
+import danekerscode.socialmediaapi.service.interfaces.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,9 +46,7 @@ public class ChatController {
     public ResponseEntity<?> leaveChat(@RequestParam(value = "chatId") Integer chatId,
                                        @RequestParam(value = "userId") Integer userId) {
         chatService.leaveChat(userId, chatId);
-        return ResponseEntity.ok(
-                "user with id:" + userId + " leaved chat with id:" + chatId
-        );
+        return ResponseEntity.ok("user with id:" + userId + " leaved chat with id:" + chatId);
     }
 
 

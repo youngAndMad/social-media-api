@@ -1,5 +1,6 @@
 package danekerscode.socialmediaapi.service.impl;
 
+import danekerscode.socialmediaapi.constants.ChatType;
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.model.Chat;
@@ -27,16 +28,18 @@ public class ChatServiceImpl implements ChatService {
     private final CustomValidator customValidator;
 
     @Override
-    public Chat save(Object t) {
-        ChatRequest chatRequest = (ChatRequest) t;
-        customValidator.validateChat(chatRequest);
+    public Chat save(Object t) {return null;} // use saveChat
+
+    public Chat saveChat(Integer firstUser , Integer secondUser , String type)
+    {
         List<User> users = new ArrayList<>() {{
-            chatRequest.users()
-                    .forEach(user -> add(userRepository.findById(user)
-                            .orElseThrow(UserNotFoundException::new))
-                    );
+            add(userRepository.findById(firstUser).orElseThrow(UserNotFoundException::new));
+            add(userRepository.findById(secondUser).orElseThrow(UserNotFoundException::new));
         }};
-        Chat chat = toChat(chatRequest , users);
+        if (!type.equals("PRIVATE") && !type.equals("GROUP")) {
+            throw new EntityPropertiesException("invalid chat type");
+        }
+        Chat chat = toChat(new ChatRequest(ChatType.valueOf(type) , firstUser , secondUser), users);
         return chatRepository.save(chat);
     }
 
@@ -61,6 +64,14 @@ public class ChatServiceImpl implements ChatService {
      var chat  = chatRepository.findById(chatId).orElseThrow(() -> new EntityPropertiesException("invalid chat id"));
      user.getChats().remove(chat);
      userRepository.save(user);
+    }
+
+    @Override
+    public void joinChat(Integer userId, Integer chatId) {
+        var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        var chat  = chatRepository.findById(chatId).orElseThrow(() -> new EntityPropertiesException("invalid chat id"));
+        user.getChats().add(chat);
+        userRepository.save(user);
     }
 
 }

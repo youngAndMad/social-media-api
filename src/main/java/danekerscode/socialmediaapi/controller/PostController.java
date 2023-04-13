@@ -5,6 +5,7 @@ import danekerscode.socialmediaapi.payload.response.CustomResponse;
 import danekerscode.socialmediaapi.service.impl.ChannelServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static java.time.LocalDateTime.now;
@@ -45,5 +46,10 @@ public class PostController {
     public ResponseEntity<?> getPost(@PathVariable Integer id){
         return ResponseEntity.ok(channelService.getPostById(id));
     }
-    
+
+    @GetMapping("all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAll(){
+        return ResponseEntity.ok(channelService.getAll());
+    }
 }

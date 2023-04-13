@@ -101,20 +101,11 @@ public class CustomValidator {
     }
 
     public void validateChat(ChatRequest chatRequest) {
-        if (chatRequest.type() == PRIVATE_CHAT && chatRequest.users().size() > 2
+      /*  if (chatRequest.type() == PRIVATE_CHAT && chatRequest.users().size() > 2
                 || chatRequest.type() == GROUP_CHAT && chatRequest.users().size() <= 2)
             throw new EntityPropertiesException("invalid properties to start chat. " +
-                    "Check amount of users");
+                    "Check amount of users");*/
 
     }
 
-   /* public void validateAuthenticationRequest(AuthenticationRequest authenticationRequest) {
-        if (authenticationRequest.email().trim().isBlank() ||
-                authenticationRequest.password().trim().isBlank())
-            throw new AuthenticationException("invalid properties");
-
-        var user = repository.findUserByEmail(authenticationRequest.email());
-        if (user.isEmpty())
-            throw new  AuthenticationException("invalid properties");
-    }*/
 }

@@ -5,6 +5,7 @@ import danekerscode.socialmediaapi.jwt.JWTUtil;
 import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
+import danekerscode.socialmediaapi.payload.response.TokenResponse;
 import danekerscode.socialmediaapi.service.interfaces.MailService;
 import danekerscode.socialmediaapi.service.interfaces.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
@@ -35,11 +36,9 @@ public class AuthenticationController {
         return new ResponseEntity<>(
                 CustomResponse.builder()
                         .timeStamp(now())
-                        .data(Map.of(
-                                "userId", userService.save(request).getId(),
-                                "token", jwtUtil.generateToken(request.email()))
-                        )
-                        .message("User has been registered successfully")
+                        .data(new TokenResponse(jwtUtil.generateToken(request.email())))
+                        .message("user id:" + userService.save(request).getId())
+                        .reason("User has been registered successfully")
                         .status(CREATED)
                         .statusCode(CREATED.value())
                         .build(),
@@ -81,7 +80,7 @@ public class AuthenticationController {
         );
         authenticationManager.authenticate(authenticationToken);
         String token = jwtUtil.generateToken(authenticationRequest.email());
-        return ResponseEntity.ok("token:" + token);
+        return ResponseEntity.ok(new TokenResponse(token));
     }
 
 }

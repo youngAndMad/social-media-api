@@ -20,6 +20,10 @@ public class Post {
     @JsonIgnore
     private Channel channel;
 
-    @OneToMany(cascade = CascadeType.ALL) @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Image> images;
+
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "post")
+    private List<Comment> comments;
 }

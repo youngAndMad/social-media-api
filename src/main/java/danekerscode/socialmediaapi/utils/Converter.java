@@ -43,6 +43,7 @@ public class Converter {
         user.setAge(request.age());
         user.setGender(GENDER.valueOf(request.gender().toUpperCase(Locale.ROOT)));
         user.setFirstName(request.firstName());
+        user.setIsPrivateAccount(request.privateAccount());
         user.setLastName(user.getLastName());
     }
 
@@ -107,4 +108,21 @@ public class Converter {
                 .build();
     }
 
+    public static Comment toComment(CommentRequest commentRequest, User user, Post post) {
+        return Comment.builder()
+                .commentedAt(now())
+                .comment(commentRequest.comment())
+                .post(post)
+                .sender(user)
+                .build();
+    }
+
+    public static Notification toNotification(String body,User user){
+        return Notification.builder()
+                .sentAt(now())
+                .message(body)
+                .checked(Boolean.FALSE)
+                .owner(user)
+                .build();
+    }
 }

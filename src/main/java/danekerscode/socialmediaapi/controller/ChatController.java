@@ -1,11 +1,10 @@
 package danekerscode.socialmediaapi.controller;
 
-import danekerscode.socialmediaapi.payload.request.ChatRequest;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
-import danekerscode.socialmediaapi.service.interfaces.ChatService;
-import danekerscode.socialmediaapi.service.interfaces.MessageService;
+import danekerscode.socialmediaapi.service.impl.ChatServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static java.time.LocalDateTime.now;
@@ -15,12 +14,26 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("chat")
 public class ChatController {
-    private final ChatService chatService;
-    private final MessageService messageService;
+    private final ChatServiceImpl chatService;
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getChat(@PathVariable Integer id) {
         return ResponseEntity.ok(chatService.getById(id));
+    }
+
+    @PostMapping("/new/{firstUser}/{secondUser}")
+    public ResponseEntity<?> createChat(@PathVariable Integer firstUser,
+                                        @PathVariable Integer secondUser,
+                                        @RequestParam(value = "type", defaultValue = "PRIVATE") String type) {
+        return ResponseEntity.ok(
+                CustomResponse.builder()
+                        .timeStamp(now())
+                        .status(CREATED)
+                        .statusCode(CREATED.value())
+                        .data("chat id:" + chatService.saveChat(firstUser, secondUser , type).getId())
+                        .message("chat successfully created. Chat type:" + type)
+                        .build()
+        );
     }
 
     @DeleteMapping("{id}")
@@ -29,25 +42,24 @@ public class ChatController {
         return ResponseEntity.ok("chat by id deleted");
     }
 
-    @PostMapping("new")
-    public ResponseEntity<?> createChat(@RequestBody ChatRequest chatRequest) {
-        return ResponseEntity.ok(
-                CustomResponse.builder()
-                        .timeStamp(now())
-                        .status(CREATED)
-                        .statusCode(CREATED.value())
-                        .data("chat id:" + chatService.save(chatRequest).getId())
-                        .message("chat successfully created")
-                        .build()
-        );
-    }
-
-    @PostMapping("leave")
+    @PutMapping("leave")
     public ResponseEntity<?> leaveChat(@RequestParam(value = "chatId") Integer chatId,
                                        @RequestParam(value = "userId") Integer userId) {
         chatService.leaveChat(userId, chatId);
         return ResponseEntity.ok("user with id:" + userId + " leaved chat with id:" + chatId);
     }
 
+    @PutMapping("join")
+    public ResponseEntity<?> joinChat(@RequestParam(value = "chatId") Integer chatId,
+                                      @RequestParam(value = "userId") Integer userId) {
+        chatService.joinChat(userId , chatId);
+        return ResponseEntity.ok("user with id:" + userId + " joined chat with id:" + chatId);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("all")
+    public ResponseEntity<?> getAll(){
+        return ResponseEntity.ok(chatService.getAll());
+    }
 
 }

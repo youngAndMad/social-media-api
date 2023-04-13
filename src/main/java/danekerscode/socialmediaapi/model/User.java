@@ -31,6 +31,7 @@ public class User implements UserDetails {
     private String password;
     private Integer age;
     private Boolean isPrivateAccount;
+
     @JsonIgnore
     private String code;
 
@@ -69,8 +70,14 @@ public class User implements UserDetails {
     @ManyToMany
     private Set<Chat> chats;
 
-    @OneToMany(mappedBy = "sender")
+    @OneToMany(mappedBy = "sender" , cascade = CascadeType.ALL)
     private List<Message> messages;
+
+    @OneToMany(mappedBy = "sender" , cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL)
+    private List<Notification> notifications;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

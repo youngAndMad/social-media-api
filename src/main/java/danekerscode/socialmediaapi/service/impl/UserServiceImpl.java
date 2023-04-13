@@ -2,6 +2,7 @@ package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.model.User;
+import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
 import danekerscode.socialmediaapi.payload.request.Request;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
@@ -10,6 +11,7 @@ import danekerscode.socialmediaapi.service.interfaces.MailService;
 import danekerscode.socialmediaapi.service.interfaces.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,11 +55,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
-    }
-
-    @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findUserByEmail(email);
     }
 
     @Override

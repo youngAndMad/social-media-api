@@ -30,7 +30,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody UserRequest userRequest,
                                     @PathVariable("id") Integer id) {
         userService.update(userRequest , id);

@@ -37,4 +37,9 @@ public class NotificationServiceImpl implements NotificationService {
         notificationRepository.deleteById(id);
         return true;
     }
+
+    @Override
+    public void deleteUserNotifications(Integer id) {
+        notificationRepository.deleteAllByOwnerId(id);
+    }
 }

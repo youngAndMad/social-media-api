@@ -1,8 +1,10 @@
 package danekerscode.socialmediaapi.service.impl;
 
+import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.model.Message;
 import danekerscode.socialmediaapi.payload.request.MessageRequest;
+import danekerscode.socialmediaapi.payload.request.Request;
 import danekerscode.socialmediaapi.repository.ChatRepository;
 import danekerscode.socialmediaapi.repository.MessageRepository;
 import danekerscode.socialmediaapi.repository.UserRepository;
@@ -53,4 +55,11 @@ public class MessageServiceImpl implements MessageService {
         return messageRepository.findAll();
     }
 
+    @Override
+    public void update(Request request, Integer id) {
+        var msg = messageRepository.findById(id).orElseThrow(() -> new EntityPropertiesException("invalid message id"));
+        msg.setText(((MessageRequest)request).text());
+        msg.setId(id);
+        messageRepository.save(msg);
+    }
 }

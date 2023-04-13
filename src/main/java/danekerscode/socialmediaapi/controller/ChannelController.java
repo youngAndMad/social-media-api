@@ -39,9 +39,6 @@ public class ChannelController {
         );
     }
 
-    @GetMapping("all/{id}")
-    public ResponseEntity<?> getAllByUserId(@PathVariable Integer id){
-        return new ResponseEntity<>(channelService.getUserChannels(id),HttpStatus.OK);
-    }
+
 
 }

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+@Data @NoArgsConstructor
 public class ErrorResponse {
     private Long timestamp;
     private String message;

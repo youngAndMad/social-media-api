@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 import static java.time.LocalDateTime.now;
@@ -24,6 +25,7 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping("authentication")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200/")
 public class AuthenticationController {
     private final UserService userService;
     private final CustomValidator validator;
@@ -81,6 +83,12 @@ public class AuthenticationController {
         authenticationManager.authenticate(authenticationToken);
         String token = jwtUtil.generateToken(authenticationRequest.email());
         return ResponseEntity.ok(new TokenResponse(token));
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> test(){
+        System.out.println("new request from angular");
+        return ResponseEntity.ok("List.of()");
     }
 
 }

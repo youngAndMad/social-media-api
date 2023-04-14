@@ -1,7 +1,5 @@
 package danekerscode.socialmediaapi.payload.request;
 
-
-
 public record UserRequest(
         String firstName,
         String lastName,

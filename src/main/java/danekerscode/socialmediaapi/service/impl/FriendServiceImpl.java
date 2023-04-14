@@ -1,5 +1,6 @@
 package danekerscode.socialmediaapi.service.impl;
 
+import danekerscode.socialmediaapi.constants.Action;
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.payload.request.FriendAction;
@@ -7,6 +8,7 @@ import danekerscode.socialmediaapi.payload.response.UserResponse;
 import danekerscode.socialmediaapi.payload.response.UserStatus;
 import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.interfaces.FriendService;
+import danekerscode.socialmediaapi.service.interfaces.NotificationService;
 import danekerscode.socialmediaapi.utils.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import static danekerscode.socialmediaapi.payload.response.UserStatus.*;
 public class FriendServiceImpl implements FriendService {
 
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     @Override
     public void doFinalAction(FriendAction friendAction) {
@@ -31,6 +34,7 @@ public class FriendServiceImpl implements FriendService {
             case UNBLOCK -> unblock(friendAction);
             default -> throw new EntityPropertiesException("invalid action");
         }
+        sendNotification(friendAction);
         userRepository.save(userRepository.findById(friendAction.getFirstUserId()).orElseThrow());
     }
 
@@ -120,4 +124,10 @@ public class FriendServiceImpl implements FriendService {
                 .map(UserResponse::getId)
                 .noneMatch(p -> p.equals(secondUserId));
     }
+
+    private void sendNotification(FriendAction friendAction){
+        var user = userRepository.findById(friendAction.getFirstUserId()).get();
+        notificationService.send(friendAction.getSecondUserId(), "%s %s %s".formatted(user.getFirstName(), user.getLastName(), friendAction.getAction().getMessage()));
+    }
+
 }

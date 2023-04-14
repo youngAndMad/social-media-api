@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.ACCEPTED;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -25,7 +25,8 @@ public class NotificationController {
                         .statusCode(ACCEPTED.value())
                         .message("notification checked")
                         .timeStamp(now())
-                        .build(), ACCEPTED
+                        .build(),
+                ACCEPTED
         );
     }
 
@@ -35,7 +36,7 @@ public class NotificationController {
         return ResponseEntity.ok(ACCEPTED);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("all/{id}")
     public ResponseEntity<?> deleteAll(@PathVariable Integer id){
         notificationService.deleteUserNotifications(id);
         return ResponseEntity.ok(ACCEPTED);

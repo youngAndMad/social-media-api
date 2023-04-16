@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.jwt;
+package danekerscode.socialmediaapi.security.jwt;
 
 import com.google.gson.Gson;
 import danekerscode.socialmediaapi.payload.response.ErrorResponse;

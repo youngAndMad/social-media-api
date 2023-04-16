@@ -40,7 +40,8 @@ public class ImageController {
                 body(
                         new InputStreamResource(
                                 new ByteArrayInputStream(
-                                        image.getBytes())
+                                        image.getBytes()
+                                )
                         )
                 );
     }

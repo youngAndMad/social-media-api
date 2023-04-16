@@ -1,7 +1,7 @@
 package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
-import danekerscode.socialmediaapi.jwt.JWTUtil;
+import danekerscode.socialmediaapi.security.jwt.JWTUtil;
 import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
@@ -16,8 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
 
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.*;
@@ -25,7 +23,7 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping("authentication")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class AuthenticationController {
     private final UserService userService;
     private final CustomValidator validator;
@@ -34,8 +32,8 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("registration")
-    public ResponseEntity<?> registration(@RequestBody @Valid UserRequest request) {
-        return new ResponseEntity<>(
+    public ResponseEntity<CustomResponse> registration(@RequestBody @Valid UserRequest request) {
+        return new ResponseEntity<CustomResponse>(
                 CustomResponse.builder()
                         .timeStamp(now())
                         .data(new TokenResponse(jwtUtil.generateToken(request.email())))
@@ -62,7 +60,7 @@ public class AuthenticationController {
                         .statusCode(ACCEPTED.value())
                         .message("check your email and send code to update password")
                         .build()
-                , OK
+                , ACCEPTED
         );
     }
 
@@ -83,12 +81,6 @@ public class AuthenticationController {
         authenticationManager.authenticate(authenticationToken);
         String token = jwtUtil.generateToken(authenticationRequest.email());
         return ResponseEntity.ok(new TokenResponse(token));
-    }
-
-    @GetMapping()
-    public ResponseEntity<?> test(){
-        System.out.println("new request from angular");
-        return ResponseEntity.ok("List.of()");
     }
 
 }

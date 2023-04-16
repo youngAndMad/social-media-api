@@ -1,7 +1,7 @@
 package danekerscode.socialmediaapi.config;
 
-import danekerscode.socialmediaapi.jwt.JWTAuthenticationEntryPoint;
-import danekerscode.socialmediaapi.jwt.JwtFilter;
+import danekerscode.socialmediaapi.security.jwt.JWTAuthenticationEntryPoint;
+import danekerscode.socialmediaapi.security.jwt.JwtFilter;
 import danekerscode.socialmediaapi.service.impl.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -26,6 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         jsr250Enabled = true
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtFilter jwtFilter;
     private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -41,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/**", "/test/**")
+                .antMatchers("/authentication/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

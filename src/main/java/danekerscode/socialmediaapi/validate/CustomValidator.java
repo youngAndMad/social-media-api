@@ -61,9 +61,7 @@ public class CustomValidator {
     }
 
     public boolean validateEmail(String email) {
-        System.out.println(email);
-        var regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        var regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         return Pattern.compile(regexPattern)
                 .matcher(email)
                 .matches();
@@ -99,13 +97,5 @@ public class CustomValidator {
         if (request.text().trim().isBlank())
             throw new EntityPropertiesException("invalid message");
     }
-
-    public void validateChat(ChatRequest chatRequest) {
-      /*  if (chatRequest.type() == PRIVATE_CHAT && chatRequest.users().size() > 2
-                || chatRequest.type() == GROUP_CHAT && chatRequest.users().size() <= 2)
-            throw new EntityPropertiesException("invalid properties to start chat. " +
-                    "Check amount of users");*/
-
-    }
-
 }
+

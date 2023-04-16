@@ -5,10 +5,13 @@ import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.service.interfaces.FriendService;
 import danekerscode.socialmediaapi.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.UnknownServiceException;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +26,18 @@ public class UserController {
     public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
+
+    @SneakyThrows
+    @GetMapping("{id}")
+    public ResponseEntity<?> getById(@PathVariable Integer id){
+        return ResponseEntity.ok(userService.getById(id).orElseThrow(UnknownServiceException::new));
+    }
+
+    @GetMapping("visit/{id}")
+    public ResponseEntity<?> getVisitPage(@PathVariable Integer id){
+        return ResponseEntity.ok(userService.getPageToVisit(id));
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {

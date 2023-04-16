@@ -79,12 +79,14 @@ public class Converter {
     }
 
     public static UserResponse toUserResponse(User user) {
-        return UserResponse.builder()
-                .id(user.getId())
+        return UserResponse
+                .builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .age(user.getAge())
                 .gender(user.getGender())
+                .channels(user.getChannels())
+                .avatar(user.getImage())
                 .build();
     }
 

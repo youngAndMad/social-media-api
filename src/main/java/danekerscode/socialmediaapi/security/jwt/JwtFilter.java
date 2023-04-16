@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.jwt;
+package danekerscode.socialmediaapi.security.jwt;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import danekerscode.socialmediaapi.service.impl.CustomUserDetailsService;

@@ -1,11 +1,13 @@
 package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
+import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.model.User;
 import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
 import danekerscode.socialmediaapi.payload.request.Request;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
+import danekerscode.socialmediaapi.payload.response.UserResponse;
 import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.interfaces.MailService;
 import danekerscode.socialmediaapi.service.interfaces.UserService;
@@ -18,8 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static danekerscode.socialmediaapi.utils.Converter.toUpdatedUser;
-import static danekerscode.socialmediaapi.utils.Converter.toUser;
+import static danekerscode.socialmediaapi.utils.Converter.*;
 
 @RequiredArgsConstructor
 @Service
@@ -76,5 +77,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByCode(String code) {
         return userRepository.findUserByCode(code);
+    }
+
+    @Override
+    public UserResponse getPageToVisit(Integer id) {
+        return toUserResponse(userRepository.findById(id).orElseThrow(UserNotFoundException::new));
     }
 }

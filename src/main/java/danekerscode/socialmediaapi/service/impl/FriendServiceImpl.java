@@ -34,7 +34,9 @@ public class FriendServiceImpl implements FriendService {
             case UNBLOCK -> unblock(friendAction);
             default -> throw new EntityPropertiesException("invalid action");
         }
-        sendNotification(friendAction);
+        if (friendAction.getAccepted()) {
+            sendNotification(friendAction);
+        }
         userRepository.save(userRepository.findById(friendAction.getFirstUserId()).orElseThrow());
     }
 

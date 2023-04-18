@@ -8,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
@@ -48,7 +47,7 @@ public class User implements UserDetails {
     private Image image;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id" , referencedColumnName = "id")
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -71,13 +70,13 @@ public class User implements UserDetails {
     @ManyToMany
     private Set<Chat> chats;
 
-    @OneToMany(mappedBy = "sender" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     private List<Message> messages;
 
-    @OneToMany(mappedBy = "sender" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "owner" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Notification> notifications;
 
     @Override
@@ -87,7 +86,13 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return this.email;
+    }
+
+    @Override
+    @JsonIgnore
+    public String getPassword() {
+        return this.password;
     }
 
     @Override

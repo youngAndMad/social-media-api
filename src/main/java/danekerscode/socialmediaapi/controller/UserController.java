@@ -27,9 +27,8 @@ public class UserController {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
-    @SneakyThrows
     @GetMapping("{id}")
-    public ResponseEntity<?> getById(@PathVariable Integer id){
+    public ResponseEntity<?> getById(@PathVariable Integer id) throws UnknownServiceException {
         return ResponseEntity.ok(userService.getById(id).orElseThrow(UnknownServiceException::new));
     }
 

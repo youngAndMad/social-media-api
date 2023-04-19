@@ -15,6 +15,7 @@ import java.util.List;
 @Data @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class UserResponse {
+    private Integer id;
     private String firstName;
     private String lastName;
     private GENDER gender;

@@ -23,7 +23,7 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping("authentication")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class AuthenticationController {
     private final UserService userService;
     private final CustomValidator validator;

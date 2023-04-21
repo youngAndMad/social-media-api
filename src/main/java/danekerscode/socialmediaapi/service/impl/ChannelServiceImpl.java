@@ -1,6 +1,8 @@
 package danekerscode.socialmediaapi.service.impl;
 
+import danekerscode.socialmediaapi.constants.ChannelContent;
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
+import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.model.Channel;
 import danekerscode.socialmediaapi.model.Post;
 import danekerscode.socialmediaapi.payload.request.ChannelRequest;
@@ -23,7 +25,8 @@ import static danekerscode.socialmediaapi.utils.Converter.toPost;
 
 @Service
 @RequiredArgsConstructor
-public class ChannelServiceImpl implements ChannelService,
+public class ChannelServiceImpl implements
+        ChannelService,
         PostService {
 
     private final ChannelRepository channelRepository;
@@ -87,11 +90,23 @@ public class ChannelServiceImpl implements ChannelService,
 
     @Override
     public void update(Request request, Integer id) {
-        ChannelService.super.update(request, id);
-    }
+        Channel channel = channelRepository.findById(id).orElseThrow(() -> new EntityPropertiesException("invalid id for channel"));
+        ChannelRequest channelRequest = (ChannelRequest) request;
+        customValidator.validateChannel(channelRequest);
+        channel.setContent(ChannelContent.valueOf(channelRequest.content()));
+        channel.setName(channelRequest.name());
+        channel.setOwner(userRepository.findById(channelRequest.owner()).orElseThrow(UserNotFoundException::new));
+        channel.setDescription(channelRequest.description());
+
+        channel.setId(id);
+
+        this.channelRepository.save(channel);
+     }
 
     @Override
     public List<Channel> getAll() {
         return channelRepository.findAll();
     }
+
+
 }

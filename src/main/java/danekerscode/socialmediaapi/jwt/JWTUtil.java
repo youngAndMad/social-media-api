@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.security.jwt;
+package danekerscode.socialmediaapi.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

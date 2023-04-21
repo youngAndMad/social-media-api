@@ -1,4 +1,4 @@
-package danekerscode.socialmediaapi.security.jwt;
+package danekerscode.socialmediaapi.jwt;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import danekerscode.socialmediaapi.service.impl.CustomUserDetailsService;
@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
-                                    HttpServletResponse httpServletResponse,
+                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain)
             throws ServletException, IOException {
         String authHeader = httpServletRequest.getHeader("Authorization");

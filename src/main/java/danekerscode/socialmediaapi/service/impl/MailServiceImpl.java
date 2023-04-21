@@ -16,24 +16,22 @@ public class MailServiceImpl implements MailService {
     private final JavaMailSender mailSender;
     private final JdbcTemplate jdbcTemplate;
 
-    public void sendGreeting(String email){
-        mailSender.send(createMessage(new MailMessageRequest(email, "hello", "маған дискретка унамайды")));
+    public void sendGreeting(String email) {
+        mailSender.send(createMessage(new MailMessageRequest(email, "Social messenger", "Wanna be software engineer")));
     }
 
-    public void sendCodeToUpdatePassword(String email){
-        String code = UUID.randomUUID().toString().substring(0,5);
-        jdbcTemplate.update("update users set code = ? where email = ?" , code , email);
-        mailSender.send(createMessage(new MailMessageRequest(email , "update password" , code)));
+    public void sendCodeToUpdatePassword(String email) {
+        String code = UUID.randomUUID().toString().substring(0, 6);
+        jdbcTemplate.update("update users set code = ? where email = ?", code, email);
+        mailSender.send(createMessage(new MailMessageRequest(email, "update password", code)));
     }
 
-    public SimpleMailMessage createMessage(MailMessageRequest request){
-
+    public SimpleMailMessage createMessage(MailMessageRequest request) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom("social-media@gmail.com");
         mailMessage.setTo(request.to());
         mailMessage.setSubject(request.subject());
         mailMessage.setText(request.message());
         return mailMessage;
-
     }
 }

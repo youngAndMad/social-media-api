@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         customValidator.validateUserRequest(userRequest);
         mailService.sendGreeting(userRequest.email());
         var user = toUser(userRequest);
-       user.setPassword(passwordEncoder.encode(userRequest.password()));
+        user.setPassword(passwordEncoder.encode(userRequest.password()));
         return userRepository.save(user);
     }
 

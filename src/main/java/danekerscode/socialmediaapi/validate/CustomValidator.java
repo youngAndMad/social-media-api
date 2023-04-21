@@ -28,12 +28,12 @@ public class CustomValidator {
     private final ChatRepository chatRepository;
 
     public void validateUserRequest(UserRequest request) {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         if (repository.findUserByEmail(request.email()).isPresent())
             sb.append("this email ").append(request.email()).append(" registered yet!");
         if (!this.validateEmail(request.email()))
             sb.append("please specify valid email");
-        if (request.gender().compareToIgnoreCase("MALE") != 0 && request.gender().compareToIgnoreCase("FEMALE") != 0)
+        if (validateGender(request.gender()))
             sb.append("please specify valid gender!");
         if (request.age() < 16)
             sb.append("for registration age should be greater than 16!");
@@ -46,8 +46,8 @@ public class CustomValidator {
     }
 
     public void validateUpdateUserRequest(UserUpdateRequest request) {
-        StringBuilder sb = new StringBuilder();
-        if (request.gender().compareToIgnoreCase("MALE") != 0 && request.gender().compareToIgnoreCase("FEMALE") != 0)
+        var sb = new StringBuilder();
+        if (validateGender(request.gender()))
             sb.append("please specify valid gender!");
         if (request.age() < 16)
             sb.append("for registration age should be greater than 16!");
@@ -96,6 +96,10 @@ public class CustomValidator {
 
         if (request.text().trim().isBlank())
             throw new EntityPropertiesException("invalid message");
+    }
+
+    private boolean validateGender(String gender){
+        return gender.compareToIgnoreCase("MALE") != 0 && gender.compareToIgnoreCase("FEMALE") != 0;
     }
 }
 

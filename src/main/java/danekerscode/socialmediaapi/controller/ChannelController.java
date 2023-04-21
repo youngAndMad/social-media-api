@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.ACCEPTED;
+
 @RestController
 @RequestMapping("channel")
 @RequiredArgsConstructor
@@ -25,10 +27,17 @@ public class ChannelController {
      return ResponseEntity.ok(channelService.getById(id));
     }
 
+    @PutMapping("update/{id}")
+    public ResponseEntity<?> updateChannel(@PathVariable Integer id,
+                                           @RequestBody ChannelRequest channelRequest){
+        this.channelService.update(channelRequest,id);
+        return ResponseEntity.ok(ACCEPTED);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id){
         channelService.deleteByID(id);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(ACCEPTED);
     }
 
     @GetMapping("all")

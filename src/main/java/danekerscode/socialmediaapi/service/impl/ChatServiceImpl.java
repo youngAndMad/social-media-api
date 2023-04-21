@@ -28,10 +28,9 @@ public class ChatServiceImpl implements ChatService {
     private final CustomValidator customValidator;
 
     @Override
-    public Chat save(Object t) {return null;} // use saveChat
+    public Chat save(Object t) {return null;} // <- use saveChat
 
-    public Chat saveChat(Integer firstUser , Integer secondUser , String type)
-    {
+    public Chat saveChat(Integer firstUser , Integer secondUser , String type) {
         List<User> users = new ArrayList<>() {{
             add(userRepository.findById(firstUser).orElseThrow(UserNotFoundException::new));
             add(userRepository.findById(secondUser).orElseThrow(UserNotFoundException::new));

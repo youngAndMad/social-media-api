@@ -4,5 +4,6 @@ import danekerscode.socialmediaapi.constants.ChatType;
 
 public record ChatRequest(ChatType type ,
                           Integer firstUserId,
-                          Integer secondUserId) implements Request {
+                          Integer secondUserId)
+        implements Request {
 }

@@ -57,14 +57,16 @@ public class User implements UserDetails {
     @JsonIgnore
     @JoinTable(name = "friends",
             joinColumns = @JoinColumn(name = "first_user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "second_user_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "second_user_id", referencedColumnName = "id")
+    )
     private List<User> friendList;
 
     @ManyToMany
     @JsonIgnore
     @JoinTable(name = "black_list",
             joinColumns = @JoinColumn(name = "first_user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "second_user_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "second_user_id", referencedColumnName = "id")
+    )
     private List<User> blackList;
 
     @ManyToMany

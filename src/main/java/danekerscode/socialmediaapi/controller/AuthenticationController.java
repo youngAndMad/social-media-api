@@ -1,7 +1,7 @@
 package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
-import danekerscode.socialmediaapi.security.jwt.JWTUtil;
+import danekerscode.socialmediaapi.jwt.JWTUtil;
 import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;

@@ -9,6 +9,7 @@ CHANNEL request mapping (channel)
 [delete] {id} => to delete by id
 [get] all => get all channels -> only for admin
 [get] {id} => get channel by id
+[put] update/{id} => update channel by id
 
 USER request mapping (user)
 [get] all => get all users

@@ -1,7 +1,7 @@
 package danekerscode.socialmediaapi.config;
 
-import danekerscode.socialmediaapi.security.jwt.JWTAuthenticationEntryPoint;
-import danekerscode.socialmediaapi.security.jwt.JwtFilter;
+import danekerscode.socialmediaapi.jwt.JWTAuthenticationEntryPoint;
+import danekerscode.socialmediaapi.jwt.JwtFilter;
 import danekerscode.socialmediaapi.service.impl.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

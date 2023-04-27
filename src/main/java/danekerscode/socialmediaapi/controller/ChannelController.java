@@ -14,6 +14,7 @@ import static org.springframework.http.HttpStatus.ACCEPTED;
 @RequestMapping("channel")
 @RequiredArgsConstructor
 public class ChannelController {
+    
     private final ChannelService channelService;
 
     @PostMapping("new")
@@ -47,7 +48,5 @@ public class ChannelController {
                 channelService.getAll()
         );
     }
-
-
 
 }

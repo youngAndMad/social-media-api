@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/**")
+                .antMatchers("/authentication/**" , "/v2/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

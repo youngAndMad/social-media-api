@@ -5,7 +5,7 @@ git clone https://github.com/youngAndMad/social-media-api
 
 <hr>
 2. Create PostgreSQL database
-create database blogapi
+create database social_media_api
 run src/main/resources/database.sql
 
 <hr>

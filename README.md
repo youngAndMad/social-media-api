@@ -1,6 +1,5 @@
 # social-media-api
 
-Steps to Setup
 1. Clone the application
 git clone https://github.com/youngAndMad/social-media-api
 

@@ -31,7 +31,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleException(AuthenticationException e) {
-        return finalHandlerException(e);
+        return new ResponseEntity<>(
+             new ErrorResponse(e.getMessage()),
+                HttpStatus.UNAUTHORIZED
+        );
     }
 
     @ExceptionHandler(UserNotFoundException.class)

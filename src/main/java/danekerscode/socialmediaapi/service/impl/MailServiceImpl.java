@@ -3,35 +3,62 @@ package danekerscode.socialmediaapi.service.impl;
 import danekerscode.socialmediaapi.payload.request.MailMessageRequest;
 import danekerscode.socialmediaapi.service.interfaces.MailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.UUID;
+import java.util.Map;
+
+import static java.time.LocalTime.now;
 
 @RequiredArgsConstructor
-@Component
+@Service
 public class MailServiceImpl implements MailService {
-    private final JavaMailSender mailSender;
-    private final JdbcTemplate jdbcTemplate;
 
+    private final RestTemplate restTemplate;
+    private final String URL = "http://localhost:8081/api/v1/mail";
+    private final String GREETING = "/greeting";
+    private final String RESET_PASSWORD = "/reset/password";
+
+    @Override
     public void sendGreeting(String email) {
-        mailSender.send(createMessage(new MailMessageRequest(email, "Social messenger", "Wanna be software engineer")));
+        long start = System.currentTimeMillis();
+        System.out.println(now());
+        customSender(email, this.GREETING);
+        long end = System.currentTimeMillis();
+        System.out.println("after response "+ now());
     }
 
+    @Override
     public void sendCodeToUpdatePassword(String email) {
-        String code = UUID.randomUUID().toString().substring(0, 6);
-        jdbcTemplate.update("update users set code = ? where email = ?", code, email);
-        mailSender.send(createMessage(new MailMessageRequest(email, "update password", code)));
+        customSender(email, this.RESET_PASSWORD);
     }
 
-    public SimpleMailMessage createMessage(MailMessageRequest request) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom("social-media@gmail.com");
-        mailMessage.setTo(request.to());
-        mailMessage.setSubject(request.subject());
-        mailMessage.setText(request.message());
-        return mailMessage;
+    public void customSender(String email, String path) {
+        restTemplate.postForObject(this.URL + path, new HttpEntity<>(Map.of("email", email), headers()), HttpStatus.class);
     }
+
+    @Override
+    public void send(MailMessageRequest request) {
+
+        restTemplate.postForObject(
+                this.URL + "/send",
+                new HttpEntity<>(
+                        Map.of("to", request.to(),
+                                "subject", request.subject(),
+                                "message", request.message()),
+                        headers()),
+                HttpStatus.class);
+    }
+
+    private HttpHeaders headers() {
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return httpHeaders;
+    }
+
+
 }

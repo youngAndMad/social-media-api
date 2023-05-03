@@ -8,5 +8,5 @@ public interface MailService {
 
     void sendCodeToUpdatePassword(String email);
 
-    SimpleMailMessage createMessage(MailMessageRequest request);
+    void send(MailMessageRequest request);
 }

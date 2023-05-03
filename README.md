@@ -9,7 +9,7 @@ create database social_media_api
 run src/main/resources/database.sql
 
 <hr>
-3. Change mysql username and password as per your installation
+3. Change postgres username and password as per your installation
 open src/main/resources/application.properties
 change spring.datasource.username and spring.datasource.password as per your postgres installation
 

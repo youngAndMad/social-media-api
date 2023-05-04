@@ -2,11 +2,12 @@ package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.jwt.JWTUtil;
+import danekerscode.socialmediaapi.service.KafkaService;
 import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
+import danekerscode.socialmediaapi.payload.request.EmailRequest;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
 import danekerscode.socialmediaapi.payload.response.TokenResponse;
-import danekerscode.socialmediaapi.service.interfaces.MailService;
 import danekerscode.socialmediaapi.service.interfaces.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +24,13 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping("authentication")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200/")
 public class AuthenticationController {
     private final UserService userService;
     private final CustomValidator validator;
-    private final MailService mailService;
+    private final KafkaService kafkaService;
     private final JWTUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
+
 
     @PostMapping("registration")
     public ResponseEntity<CustomResponse> registration(@RequestBody @Valid UserRequest request) {
@@ -48,11 +49,14 @@ public class AuthenticationController {
 
 
     @GetMapping("update/password")
-    public ResponseEntity<?> forgotPassword(@RequestBody String email) {
+    public ResponseEntity<?> forgotPassword(@RequestBody EmailRequest request) {
+        String email = request.email();
+
         if (!validator.validateEmail(email)) {
             throw new AuthenticationException("invalid email: " + email);
         }
-        mailService.sendCodeToUpdatePassword(email);
+
+        kafkaService.sendEmailRequest(email , "resetPassword");
         return new ResponseEntity<>(
                 CustomResponse.builder()
                         .timeStamp(now())

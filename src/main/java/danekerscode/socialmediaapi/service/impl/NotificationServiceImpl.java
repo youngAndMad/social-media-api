@@ -21,6 +21,7 @@ public class NotificationServiceImpl implements NotificationService {
         var note = notificationRepository.findById(id)
                 .orElseThrow(() -> new EntityPropertiesException("invalid notification id"));
         note.setChecked(Boolean.TRUE);
+        notificationRepository.save(note);
         return true;
     }
 

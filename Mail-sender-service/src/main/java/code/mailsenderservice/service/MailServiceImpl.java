@@ -24,6 +24,7 @@ public class MailServiceImpl implements MailService{
 
     @Override
     public void greeting(EmailRequest request) {
+        System.out.println("from service impl: "+request.email());
         mailSender.send(createMessage(new MailMessageRequest(request.email(), "Social messenger", "Wanna be software engineer")));
     }
 

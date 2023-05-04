@@ -2,18 +2,16 @@ package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
+import danekerscode.socialmediaapi.service.KafkaService;
 import danekerscode.socialmediaapi.model.User;
-import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
 import danekerscode.socialmediaapi.payload.request.Request;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
 import danekerscode.socialmediaapi.payload.response.UserResponse;
 import danekerscode.socialmediaapi.repository.UserRepository;
-import danekerscode.socialmediaapi.service.interfaces.MailService;
 import danekerscode.socialmediaapi.service.interfaces.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CustomValidator customValidator;
-    private final MailService mailService;
+    private final KafkaService kafkaService;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -36,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public User save(Object request) {
         UserRequest userRequest = (UserRequest) request;
         customValidator.validateUserRequest(userRequest);
-        mailService.sendGreeting(userRequest.email());
+        kafkaService.sendEmailRequest(userRequest.email() , "greeting");
         var user = toUser(userRequest);
         user.setPassword(passwordEncoder.encode(userRequest.password()));
         return userRepository.save(user);

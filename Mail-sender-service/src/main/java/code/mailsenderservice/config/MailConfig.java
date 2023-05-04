@@ -42,7 +42,7 @@ public class MailConfig {
 
         mailSender.setHost(this.host);
         mailSender.setPort(this.port);
-        mailSender.setUsername("****");
+        mailSender.setUsername("****@gmail.com");
         mailSender.setPassword(this.password);
 
         Properties properties = mailSender.getJavaMailProperties();

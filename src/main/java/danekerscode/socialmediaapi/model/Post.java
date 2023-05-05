@@ -6,9 +6,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity @Builder
-@Getter @Setter
-@AllArgsConstructor @NoArgsConstructor
+@Entity
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +23,10 @@ public class Post {
     @JsonIgnore
     private Channel channel;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Image> images;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<ImageData> images;
 
-    @OneToMany(cascade = CascadeType.ALL , mappedBy = "post")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Comment> comments;
+
 }

@@ -2,13 +2,13 @@ package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
-import danekerscode.socialmediaapi.service.KafkaService;
 import danekerscode.socialmediaapi.model.User;
 import danekerscode.socialmediaapi.payload.request.Request;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
 import danekerscode.socialmediaapi.payload.response.UserResponse;
 import danekerscode.socialmediaapi.repository.UserRepository;
+import danekerscode.socialmediaapi.service.interfaces.KafkaService;
 import danekerscode.socialmediaapi.service.interfaces.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;

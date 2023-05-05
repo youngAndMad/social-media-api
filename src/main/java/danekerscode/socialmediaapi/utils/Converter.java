@@ -5,8 +5,13 @@ import danekerscode.socialmediaapi.constants.GENDER;
 import danekerscode.socialmediaapi.model.*;
 import danekerscode.socialmediaapi.payload.request.*;
 import danekerscode.socialmediaapi.payload.response.UserResponse;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,6 +21,7 @@ import java.util.Locale;
 import static danekerscode.socialmediaapi.constants.Role.ROLE_USER;
 import static java.time.LocalDateTime.now;
 
+@Slf4j
 public class Converter {
 
     public static User toUser(UserRequest userRequest) {
@@ -56,25 +62,21 @@ public class Converter {
                 .build();
     }
 
-    public static Image toImage(MultipartFile file) {
-        try {
-            return Image.builder()
-                    .originalName(file.getOriginalFilename())
-                    .contentType(file.getContentType())
-                    .bytes(file.getBytes())
-                    .size(file.getSize())
-                    .build();
+    public static File convertMultiPartFileToFile(MultipartFile file) {
+        File convertedFile = new File( file.getOriginalFilename());
+        try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
+            fos.write(file.getBytes());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Error converting multipartFile to file", e);
         }
+        return convertedFile;
     }
-
     public static Post toPost(PostRequest request, Channel channel) {
         return Post.builder()
                 .title(request.title())
                 .body(request.body())
                 .channel(channel)
-                .images(new ArrayList<>())
+                //.images(new ArrayList<>()) fixme
                 .build();
     }
 
@@ -86,7 +88,7 @@ public class Converter {
                 .age(user.getAge())
                 .gender(user.getGender())
                 .channels(user.getChannels())
-                .avatar(user.getImage())
+                .imageURL(user.getImageUrl())
                 .build();
     }
 

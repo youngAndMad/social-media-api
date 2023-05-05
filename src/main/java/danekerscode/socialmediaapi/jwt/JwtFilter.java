@@ -1,6 +1,6 @@
 package danekerscode.socialmediaapi.jwt;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import danekerscode.socialmediaapi.service.impl.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.springframework.security.access.AccessDeniedException;
 
 @RequiredArgsConstructor
 @Component
@@ -49,9 +50,12 @@ public class JwtFilter extends OncePerRequestFilter {
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
-                } catch (JWTVerificationException exc) {
+                } catch (AccessDeniedException e) {
                     httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST,
                             "Invalid JWT Token");
+                } catch (TokenExpiredException tokenExpiredException){
+                    httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST ,
+                            "token expired");
                 }
             }
         }

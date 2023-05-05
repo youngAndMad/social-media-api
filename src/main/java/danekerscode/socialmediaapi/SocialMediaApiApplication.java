@@ -10,5 +10,4 @@ public class SocialMediaApiApplication {
         SpringApplication.run(SocialMediaApiApplication.class, args);
     }
 
-
 }

@@ -1,6 +1,5 @@
 package danekerscode.socialmediaapi.controller;
 
-import danekerscode.socialmediaapi.model.Message;
 import danekerscode.socialmediaapi.payload.request.MessageRequest;
 import danekerscode.socialmediaapi.payload.request.UpdateMessageRequest;
 import danekerscode.socialmediaapi.service.interfaces.MessageService;
@@ -20,14 +19,14 @@ public class MessageController {
     @PostMapping("new")
     @MessageMapping("/message")
     @SendTo("/chat/message")
-    public ResponseEntity<?> addMessage(@RequestBody MessageRequest messageRequest){
-       return ResponseEntity.ok(messageService.save(messageRequest));
+    public ResponseEntity<?> addMessage(@RequestBody MessageRequest messageRequest) {
+        return ResponseEntity.ok(messageService.save(messageRequest));
     }
 
     @DeleteMapping("{id}")
     @MessageMapping("/message/delete")
     @SendTo("/chat/message")
-    public ResponseEntity<?> delete(@PathVariable Integer id){
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
         messageService.deleteByID(id);
         return ResponseEntity.ok("message deleted");
     }
@@ -35,8 +34,8 @@ public class MessageController {
     @PutMapping()
     @MessageMapping("/message/update")
     @SendTo("/chat/message")
-    public ResponseEntity<?> update(@RequestBody UpdateMessageRequest request){
-        messageService.update(request , request.id());
+    public ResponseEntity<?> update(@RequestBody UpdateMessageRequest request) {
+        messageService.update(request, request.id());
         return ResponseEntity.ok("updated");
     }
 

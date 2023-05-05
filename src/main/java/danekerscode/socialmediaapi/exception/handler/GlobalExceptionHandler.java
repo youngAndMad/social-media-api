@@ -15,14 +15,7 @@ import java.nio.file.AccessDeniedException;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponse> handleException(AccessDeniedException e){
-        return new ResponseEntity<>(
-                new ErrorResponse(
-                        e.getMessage()
-                ), HttpStatus.BAD_REQUEST
-        );
-    }
+
 
     @ExceptionHandler(RegistratoinException.class)
     public ResponseEntity<ErrorResponse> handleException(RegistratoinException e) {

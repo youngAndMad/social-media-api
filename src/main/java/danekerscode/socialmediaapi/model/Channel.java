@@ -23,15 +23,11 @@ public class Channel {
     @Enumerated(EnumType.STRING)
     private ChannelContent content;
     private LocalDateTime createdAt;
+    private String imageUrl;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     private User owner;
-
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id" , referencedColumnName = "id")
-    private Image image;
 
     @OneToMany(mappedBy = "channel" , cascade = CascadeType.ALL)
     private List<Post> posts;

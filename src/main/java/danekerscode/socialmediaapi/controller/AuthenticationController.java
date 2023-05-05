@@ -2,12 +2,12 @@ package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.jwt.JWTUtil;
-import danekerscode.socialmediaapi.service.KafkaService;
 import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
 import danekerscode.socialmediaapi.payload.request.EmailRequest;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
 import danekerscode.socialmediaapi.payload.response.TokenResponse;
+import danekerscode.socialmediaapi.service.interfaces.KafkaService;
 import danekerscode.socialmediaapi.service.interfaces.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static java.time.LocalDateTime.now;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.ACCEPTED;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("authentication")
@@ -30,7 +31,6 @@ public class AuthenticationController {
     private final KafkaService kafkaService;
     private final JWTUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
-
 
     @PostMapping("registration")
     public ResponseEntity<CustomResponse> registration(@RequestBody @Valid UserRequest request) {
@@ -43,10 +43,8 @@ public class AuthenticationController {
                         .status(CREATED)
                         .statusCode(CREATED.value())
                         .build(),
-                CREATED
-        );
+                CREATED);
     }
-
 
     @GetMapping("update/password")
     public ResponseEntity<?> forgotPassword(@RequestBody EmailRequest request) {
@@ -56,16 +54,15 @@ public class AuthenticationController {
             throw new AuthenticationException("invalid email: " + email);
         }
 
-        kafkaService.sendEmailRequest(email , "resetPassword");
+        kafkaService.sendEmailRequest(email, "resetPassword");
         return new ResponseEntity<>(
                 CustomResponse.builder()
                         .timeStamp(now())
                         .status(ACCEPTED)
                         .statusCode(ACCEPTED.value())
                         .message("check your email and send code to update password")
-                        .build()
-                , ACCEPTED
-        );
+                        .build(),
+                ACCEPTED);
     }
 
     @PostMapping("update/password")
@@ -80,11 +77,9 @@ public class AuthenticationController {
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 authenticationRequest.email(),
-                authenticationRequest.password()
-        );
+                authenticationRequest.password());
         authenticationManager.authenticate(authenticationToken);
-        String token = jwtUtil.generateToken(authenticationRequest.email());
-        return ResponseEntity.ok(new TokenResponse(token));
+        return ResponseEntity.ok(new TokenResponse(jwtUtil.generateToken(authenticationRequest.email())));
     }
 
 }

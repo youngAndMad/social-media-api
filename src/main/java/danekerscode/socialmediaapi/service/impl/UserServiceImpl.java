@@ -3,6 +3,7 @@ package danekerscode.socialmediaapi.service.impl;
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.model.User;
+import danekerscode.socialmediaapi.payload.request.PasswordRequest;
 import danekerscode.socialmediaapi.payload.request.Request;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
@@ -31,8 +32,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User save(Object request) {
-        UserRequest userRequest = (UserRequest) request;
+    public User save(UserRequest userRequest) {
         customValidator.validateUserRequest(userRequest);
         kafkaService.sendEmailRequest(userRequest.email() , "greeting");
         var user = toUser(userRequest);
@@ -57,9 +57,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(String code, String newPassword) {
-        var user = findByCode(code).orElseThrow(() -> new AuthenticationException("invalid code"));
-        user.setPassword(newPassword);
+    public void updatePassword(PasswordRequest passwordRequest) {
+        var user = findByCode(passwordRequest.code()).orElseThrow(() -> new AuthenticationException("invalid code"));
+        user.setPassword(passwordEncoder.encode(passwordRequest.newPassword()));
         user.setCode(null);
         this.userRepository.save(user);
     }

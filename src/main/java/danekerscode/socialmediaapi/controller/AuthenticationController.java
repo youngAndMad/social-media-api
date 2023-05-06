@@ -4,6 +4,7 @@ import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.jwt.JWTUtil;
 import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
 import danekerscode.socialmediaapi.payload.request.EmailRequest;
+import danekerscode.socialmediaapi.payload.request.PasswordRequest;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
 import danekerscode.socialmediaapi.payload.response.TokenResponse;
@@ -67,9 +68,8 @@ public class AuthenticationController {
 
     @PostMapping("update/password")
     public ResponseEntity<?> updatePassword(
-            @RequestParam(name = "code", defaultValue = "") String code,
-            @RequestBody String newPassword) {
-        userService.updatePassword(code, newPassword);
+            @RequestBody PasswordRequest passwordRequest) {
+        userService.updatePassword(passwordRequest);
         return new ResponseEntity<>(ACCEPTED);
     }
 

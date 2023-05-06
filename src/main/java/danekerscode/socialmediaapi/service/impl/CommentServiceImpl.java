@@ -29,9 +29,7 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findAllByPostId(postId);
     }
 
-    @Override
-    public Comment save(Object t) {
-        CommentRequest commentRequest = (CommentRequest) t;
+    public Comment save(CommentRequest commentRequest) {
         return commentRepository
                 .save(
                         toComment(

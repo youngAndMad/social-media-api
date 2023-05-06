@@ -29,8 +29,7 @@ public class MessageServiceImpl implements MessageService {
     private final CustomValidator customValidator;
 
     @Override
-    public Message save(Object t) {
-        MessageRequest request = (MessageRequest) t;
+    public Message save(MessageRequest request) {
         customValidator.validateMessage(request);
         return messageRepository.save(
                 toMessage(

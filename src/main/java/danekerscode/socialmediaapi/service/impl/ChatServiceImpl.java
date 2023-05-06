@@ -28,20 +28,24 @@ public class ChatServiceImpl implements ChatService {
     private final CustomValidator customValidator;
 
     @Override
-    public Chat save(Object t) {return null;} // <- use saveChat
+    public Chat createChat(ChatRequest chatRequest) {
 
-    public Chat saveChat(Integer firstUser , Integer secondUser , String type) {
-        List<User> users = new ArrayList<>() {{
-            add(userRepository.findById(firstUser).orElseThrow(UserNotFoundException::new));
-            add(userRepository.findById(secondUser).orElseThrow(UserNotFoundException::new));
-        }};
-        if (!type.equals("PRIVATE") && !type.equals("GROUP")) {
-            throw new EntityPropertiesException("invalid chat type");
+        var firstUser = userRepository.findById(chatRequest.firstUserId()).orElseThrow(UserNotFoundException::new);
+        var secondUser = userRepository.findById(chatRequest.secondUserId()).orElseThrow(UserNotFoundException::new);
+
+        if (firstUser.getChats().stream()
+                .anyMatch(chat -> secondUser.getChats().contains(chat))){
+            throw new EntityPropertiesException("these users already have a chat");
         }
-        Chat chat = toChat(new ChatRequest(ChatType.valueOf(type) , firstUser , secondUser), users);
+
+        List<User> users = new ArrayList<>() {{
+            add(firstUser);
+            add(secondUser);
+        }};
+
+        Chat chat = toChat(chatRequest, users);
         return chatRepository.save(chat);
     }
-
     @Override
     public void deleteByID(Integer id) {
         chatRepository.deleteById(id);

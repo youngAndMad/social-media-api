@@ -71,9 +71,8 @@ public class ChannelServiceImpl implements
         return channelRepository.getChannelsByOwner_Id(id);
     }
 
-    @Override
-    public Channel save(Object t) {
-        ChannelRequest request = (ChannelRequest) t;
+
+    public Channel save(ChannelRequest request) {
         customValidator.validateChannel(request);
         return channelRepository.save(toChannel(request, userRepository.findById(request.owner()).get()));
     }

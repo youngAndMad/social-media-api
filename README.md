@@ -192,7 +192,7 @@ The app defines following CRUD APIs.
 }
 ```
 
-##### <a id="postRequest"></a>
+##### <a id="postRequest">Post Request</a>
 ```json
 {
 	"title" : "My Day",
@@ -202,7 +202,7 @@ The app defines following CRUD APIs.
 ```
 
 
-##### <a id="messageRequest"></a>
+##### <a id="messageRequest">Message Request</a>
 ```json
 {
 	"text" : "Hello world from Danekerscode",

@@ -132,7 +132,7 @@ The app defines following CRUD APIs.
 ```json
 {
    "firstName": "Daneker",
-    lastName": "Graham",
+   "lastName": "Graham",
    "age" : 17,
    "password": "password",
    "email": "kkraken2005@gmail.com",

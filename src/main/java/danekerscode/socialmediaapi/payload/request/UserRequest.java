@@ -1,14 +1,13 @@
 package danekerscode.socialmediaapi.payload.request;
 
 public record UserRequest(
-        String firstName,
-        String lastName,
-        String email,
-        String password,
-        Integer age,
-        String gender,
-        Boolean isPrivateAccount,
-        AddressRequest address) implements Request {
+                String firstName,
+                String lastName,
+                String password,
+                Integer age,
+                String email,
+                String gender,
+                String status,
+                Boolean isPrivateAccount,
+                AddressRequest address) implements Request {
 }
-
-

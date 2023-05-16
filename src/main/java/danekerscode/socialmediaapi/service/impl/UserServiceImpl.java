@@ -2,17 +2,18 @@ package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
+import danekerscode.socialmediaapi.jwt.JWTUtil;
 import danekerscode.socialmediaapi.model.User;
-import danekerscode.socialmediaapi.payload.request.PasswordRequest;
-import danekerscode.socialmediaapi.payload.request.Request;
-import danekerscode.socialmediaapi.payload.request.UserRequest;
-import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
+import danekerscode.socialmediaapi.payload.request.*;
+import danekerscode.socialmediaapi.payload.response.TokenResponse;
 import danekerscode.socialmediaapi.payload.response.UserResponse;
 import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.interfaces.KafkaService;
 import danekerscode.socialmediaapi.service.interfaces.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserService {
     private final CustomValidator customValidator;
     private final KafkaService kafkaService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JWTUtil jwtUtil;
 
 
     @Override
@@ -40,6 +43,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    public void sendVerifyCode(String email){
+        kafkaService.sendEmailRequest(email , "activationCode");
+    }
+
     @Override
     public void deleteByID(Integer id) {
         userRepository.deleteById(id);
@@ -49,7 +56,6 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getById(Integer id) {
         return userRepository.findById(id);
     }
-
 
     @Override
     public List<User> getAll() {
@@ -68,7 +74,7 @@ public class UserServiceImpl implements UserService {
     public void update(Request request, Integer id) {
         customValidator.validateUpdateUserRequest((UserUpdateRequest) request);
         var user = userRepository.findById(id).orElseThrow();
-        toUpdatedUser((UserUpdateRequest) request, user );
+        toUpdatedUser((UserUpdateRequest) request, user);
         this.userRepository.save(user);
     }
 
@@ -80,5 +86,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse getPageToVisit(Integer id) {
         return toUserResponse(userRepository.findById(id).orElseThrow(UserNotFoundException::new));
+    }
+
+    @Override
+    public void updateStatus(StatusUpdateRequest request, Integer id) {
+        var user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        user.setStatus(request.status());
+        userRepository.save(user);
+    }
+
+    @Override
+    public TokenResponse authenticate(AuthenticationRequest authenticationRequest) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                authenticationRequest.email(),
+                authenticationRequest.password());
+        var user =  (User) authenticationManager.authenticate(authenticationToken).getPrincipal();
+
+        return createTokenResponse(authenticationRequest.email(), user.getId());
+    }
+
+    public TokenResponse createTokenResponse(String email , Integer userId){
+        return new TokenResponse(jwtUtil.generateToken(email) , userId);
     }
 }

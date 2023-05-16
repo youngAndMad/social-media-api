@@ -28,7 +28,6 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
 
-    @JsonIgnore
     private String email;
     @JsonIgnore
     private String password;
@@ -43,9 +42,12 @@ public class User implements UserDetails {
     private GENDER gender;
 
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private Role role;
 
     private String imageUrl;
+
+    private String status;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
@@ -56,18 +58,12 @@ public class User implements UserDetails {
 
     @ManyToMany
     @JsonIgnore
-    @JoinTable(name = "friends",
-            joinColumns = @JoinColumn(name = "first_user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "second_user_id", referencedColumnName = "id")
-    )
+    @JoinTable(name = "friends", joinColumns = @JoinColumn(name = "first_user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "second_user_id", referencedColumnName = "id"))
     private List<User> friendList;
 
     @ManyToMany
     @JsonIgnore
-    @JoinTable(name = "black_list",
-            joinColumns = @JoinColumn(name = "first_user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "second_user_id", referencedColumnName = "id")
-    )
+    @JoinTable(name = "black_list", joinColumns = @JoinColumn(name = "first_user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "second_user_id", referencedColumnName = "id"))
     private List<User> blackList;
 
     @ManyToMany
@@ -83,11 +79,13 @@ public class User implements UserDetails {
     private List<Notification> notifications;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return this.email;
     }
@@ -99,20 +97,24 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

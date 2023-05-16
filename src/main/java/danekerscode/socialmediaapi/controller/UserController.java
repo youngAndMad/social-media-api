@@ -1,6 +1,7 @@
 package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.payload.request.FriendAction;
+import danekerscode.socialmediaapi.payload.request.StatusUpdateRequest;
 import danekerscode.socialmediaapi.payload.request.UserRequest;
 import danekerscode.socialmediaapi.payload.response.ErrorResponse;
 import danekerscode.socialmediaapi.service.interfaces.FriendService;
@@ -17,13 +18,13 @@ import org.springframework.security.access.AccessDeniedException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("user")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     private final UserService userService;
     private final FriendService friendService;
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
@@ -74,14 +75,20 @@ public class UserController {
                 friendService.getUserStatus(firstUserId, secondUserId));
     }
 
+    @PutMapping("update/status/{id}")
+    public ResponseEntity<?> updateStatus(@RequestBody StatusUpdateRequest request,
+            @PathVariable Integer id) {
+        this.userService.updateStatus(request, id);
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponse> handleException(AccessDeniedException e){
+    public ResponseEntity<ErrorResponse> handleException(AccessDeniedException e) {
         System.out.println("hello world");
         return new ResponseEntity<>(
                 new ErrorResponse(
-                        e.getMessage()
-                ), HttpStatus.UNAUTHORIZED
-        );
+                        e.getMessage()),
+                HttpStatus.UNAUTHORIZED);
     }
 
 }

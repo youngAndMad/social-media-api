@@ -10,12 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.nio.file.AccessDeniedException;
-
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
-
 
     @ExceptionHandler(RegistratoinException.class)
     public ResponseEntity<ErrorResponse> handleException(RegistratoinException e) {
@@ -25,9 +21,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleException(AuthenticationException e) {
         return new ResponseEntity<>(
-             new ErrorResponse(e.getMessage()),
-                HttpStatus.UNAUTHORIZED
-        );
+                new ErrorResponse(e.getMessage()),
+                HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -38,8 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<ErrorResponse> finalHandlerException(RuntimeException e) {
         return new ResponseEntity<>(
                 new ErrorResponse(
-                        e.getMessage()
-                ), HttpStatus.BAD_REQUEST
-        );
+                        e.getMessage()),
+                HttpStatus.BAD_REQUEST);
     }
 }

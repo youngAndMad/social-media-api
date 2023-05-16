@@ -15,6 +15,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("comment")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class CommentController {
     private final CommentService commentService;
 
@@ -27,8 +29,8 @@ public class CommentController {
                         .timeStamp(now())
                         .message("successfully commented")
                         .data(Map.of("commentId", commentService.save(commentRequest).getId()))
-                        .build(), CREATED
-        );
+                        .build(),
+                CREATED);
     }
 
     @GetMapping("{id}")
@@ -39,9 +41,8 @@ public class CommentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id){
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
         commentService.deleteByID(id);
         return ResponseEntity.ok("comment by id deleted. Id:" + id);
     }
 }
-

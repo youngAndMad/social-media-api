@@ -2,6 +2,7 @@ package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.jwt.JWTUtil;
+import danekerscode.socialmediaapi.model.User;
 import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
 import danekerscode.socialmediaapi.payload.request.EmailRequest;
 import danekerscode.socialmediaapi.payload.request.PasswordRequest;
@@ -17,8 +18,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -26,20 +25,20 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("authentication")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticationController {
     private final UserService userService;
     private final CustomValidator validator;
     private final KafkaService kafkaService;
-    private final JWTUtil jwtUtil;
-    private final AuthenticationManager authenticationManager;
 
     @PostMapping("registration")
-    public ResponseEntity<CustomResponse> registration(@RequestBody @Valid UserRequest request) {
-        return new ResponseEntity<CustomResponse>(
+    public ResponseEntity<CustomResponse> registration(@RequestBody UserRequest request) {
+        var userId = userService.save(request).getId();
+        return new ResponseEntity<>(
                 CustomResponse.builder()
                         .timeStamp(now())
-                        .data(new TokenResponse(jwtUtil.generateToken(request.email())))
-                        .message("user id:" + userService.save(request).getId())
+                        .data(userService.createTokenResponse(request.email() , userId))
+                        .message("user id:" + userId)
                         .reason("User has been registered successfully")
                         .status(CREATED)
                         .statusCode(CREATED.value())
@@ -56,6 +55,7 @@ public class AuthenticationController {
         }
 
         kafkaService.sendEmailRequest(email, "resetPassword");
+
         return new ResponseEntity<>(
                 CustomResponse.builder()
                         .timeStamp(now())
@@ -75,11 +75,7 @@ public class AuthenticationController {
 
     @PostMapping("authenticate")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                authenticationRequest.email(),
-                authenticationRequest.password());
-        authenticationManager.authenticate(authenticationToken);
-        return ResponseEntity.ok(new TokenResponse(jwtUtil.generateToken(authenticationRequest.email())));
+        return ResponseEntity.ok(userService.authenticate(authenticationRequest));
     }
 
 }

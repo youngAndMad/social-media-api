@@ -14,6 +14,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("chat")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class ChatController {
     private final ChatServiceImpl chatService;
 
@@ -22,7 +24,7 @@ public class ChatController {
         return ResponseEntity.ok(chatService.getById(id));
     }
 
-    @PostMapping("/new}")
+    @PostMapping("/new")
     public ResponseEntity<?> createChat(@RequestBody ChatRequest chatRequest) {
         return ResponseEntity.ok(
                 CustomResponse.builder()

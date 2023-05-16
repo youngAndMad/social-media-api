@@ -25,7 +25,6 @@ public class ChatServiceImpl implements ChatService {
 
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
-    private final CustomValidator customValidator;
 
     @Override
     public Chat createChat(ChatRequest chatRequest) {
@@ -34,18 +33,21 @@ public class ChatServiceImpl implements ChatService {
         var secondUser = userRepository.findById(chatRequest.secondUserId()).orElseThrow(UserNotFoundException::new);
 
         if (firstUser.getChats().stream()
-                .anyMatch(chat -> secondUser.getChats().contains(chat))){
+                .anyMatch(chat -> secondUser.getChats().contains(chat))) {
             throw new EntityPropertiesException("these users already have a chat");
         }
 
-        List<User> users = new ArrayList<>() {{
-            add(firstUser);
-            add(secondUser);
-        }};
+        List<User> users = new ArrayList<>() {
+            {
+                add(firstUser);
+                add(secondUser);
+            }
+        };
 
         Chat chat = toChat(chatRequest, users);
         return chatRepository.save(chat);
     }
+
     @Override
     public void deleteByID(Integer id) {
         chatRepository.deleteById(id);
@@ -63,16 +65,16 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void leaveChat(Integer userId, Integer chatId) {
-     var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-     var chat  = chatRepository.findById(chatId).orElseThrow(() -> new EntityPropertiesException("invalid chat id"));
-     user.getChats().remove(chat);
-     userRepository.save(user);
+        var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        var chat = chatRepository.findById(chatId).orElseThrow(() -> new EntityPropertiesException("invalid chat id"));
+        user.getChats().remove(chat);
+        userRepository.save(user);
     }
 
     @Override
     public void joinChat(Integer userId, Integer chatId) {
         var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        var chat  = chatRepository.findById(chatId).orElseThrow(() -> new EntityPropertiesException("invalid chat id"));
+        var chat = chatRepository.findById(chatId).orElseThrow(() -> new EntityPropertiesException("invalid chat id"));
         user.getChats().add(chat);
         userRepository.save(user);
     }

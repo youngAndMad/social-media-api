@@ -15,6 +15,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("post")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class PostController {
     private final ChannelServiceImpl channelService;
 

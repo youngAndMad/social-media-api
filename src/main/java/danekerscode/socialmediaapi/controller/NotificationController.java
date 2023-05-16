@@ -13,6 +13,8 @@ import static org.springframework.http.HttpStatus.ACCEPTED;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("notification")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class NotificationController {
     private final NotificationService notificationService;
 

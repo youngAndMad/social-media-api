@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(customAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/**", "/v1/**")
+                .antMatchers("/authentication/**", "/article/all")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

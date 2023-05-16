@@ -8,6 +8,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 import static java.util.UUID.randomUUID;
 
 @Service
@@ -19,29 +21,41 @@ public class MailServiceImpl implements MailService{
 
     @Override
     public void send(MailMessageRequest request) {
-        mailSender.send(createMessage(new MailMessageRequest(request.to() , request.subject(), request.message())));
+        mailSender.send(createMessage(request.to() , request.subject(), request.message()));
     }
 
     @Override
     public void greeting(EmailRequest request) {
         System.out.println("from service impl: "+request.email());
-        mailSender.send(createMessage(new MailMessageRequest(request.email(), "Social messenger", "Wanna be software engineer")));
+        mailSender.send(createMessage(request.email(), "Social messenger", "Wanna be software engineer"));
     }
 
     @Override
     public void sendCodeToUpdatePassword(EmailRequest request) {
         String code = randomUUID().toString().substring(0, 6);
-        jdbcTemplate.update("update users set code = ? where email = ?", code, request.email());
-        mailSender.send(createMessage(new MailMessageRequest(request.email(), "update password", code)));
+        setCode(request.email() , code);
+        mailSender.send(createMessage(request.email(), "update password", code));
     }
 
-    public SimpleMailMessage createMessage(MailMessageRequest request) {
+    @Override
+    public void sendActivationCode(EmailRequest request) {
+        Random random = new Random();
+        String code =String.valueOf(random.ints(100_000 , 999_999).findFirst().getAsInt());
+        setCode(request.email() , code);
+        mailSender.send(createMessage(request.email() , "activation code" , code));
+    }
+
+    public SimpleMailMessage createMessage(String to , String subj , String message) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom("social-media@gmail.com");
-        mailMessage.setTo(request.to());
-        mailMessage.setSubject(request.subject());
-        mailMessage.setText(request.message());
+        mailMessage.setTo(to);
+        mailMessage.setSubject(subj);
+        mailMessage.setText(message);
         return mailMessage;
+    }
+
+    private void setCode(String email , String code){
+        jdbcTemplate.update("update users set code = ? where email = ?", code, email);
     }
 
 }

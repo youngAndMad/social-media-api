@@ -5,11 +5,9 @@ import danekerscode.socialmediaapi.constants.GENDER;
 import danekerscode.socialmediaapi.model.*;
 import danekerscode.socialmediaapi.payload.request.*;
 import danekerscode.socialmediaapi.payload.response.UserResponse;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,15 +31,15 @@ public class Converter {
                 .age(userRequest.age())
                 .password(userRequest.password())
                 .role(ROLE_USER)
-                .isPrivateAccount(userRequest.isPrivateAccount() == null ? Boolean.FALSE : userRequest.isPrivateAccount())
+                .isPrivateAccount(
+                        userRequest.isPrivateAccount() == null ? Boolean.FALSE : userRequest.isPrivateAccount())
                 .address(
                         Address.builder()
                                 .country(userRequest.address().country())
                                 .city(userRequest.address().city())
                                 .street(userRequest.address().street())
                                 .houseNumber(userRequest.address().houseNumber())
-                                .build()
-                )
+                                .build())
                 .build();
     }
 
@@ -63,7 +61,7 @@ public class Converter {
     }
 
     public static File convertMultiPartFileToFile(MultipartFile file) {
-        File convertedFile = new File( file.getOriginalFilename());
+        File convertedFile = new File(file.getOriginalFilename());
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
             fos.write(file.getBytes());
         } catch (IOException e) {
@@ -71,21 +69,24 @@ public class Converter {
         }
         return convertedFile;
     }
+
     public static Post toPost(PostRequest request, Channel channel) {
         return Post.builder()
                 .title(request.title())
                 .body(request.body())
                 .channel(channel)
-                //.images(new ArrayList<>()) fixme
+                .images(new ArrayList<>())
                 .build();
     }
 
     public static UserResponse toUserResponse(User user) {
         return UserResponse
                 .builder()
+                .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .age(user.getAge())
+                .userStatus(null)
                 .gender(user.getGender())
                 .channels(user.getChannels())
                 .imageURL(user.getImageUrl())
@@ -121,7 +122,7 @@ public class Converter {
                 .build();
     }
 
-    public static Notification toNotification(String body,User user){
+    public static Notification toNotification(String body, User user) {
         return Notification.builder()
                 .sentAt(now())
                 .message(body)

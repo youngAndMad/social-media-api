@@ -13,6 +13,8 @@ import static org.springframework.http.HttpStatus.ACCEPTED;
 @RestController
 @RequestMapping("channel")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class ChannelController {
     
     private final ChannelService channelService;

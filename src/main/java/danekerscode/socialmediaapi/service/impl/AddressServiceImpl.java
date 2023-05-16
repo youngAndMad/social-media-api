@@ -16,11 +16,6 @@ public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
 
     @Override
-    public Address save(Object t) {
-        return null;
-    }
-
-    @Override
     public void deleteByID(Integer id) {
         addressRepository.deleteById(id);
     }

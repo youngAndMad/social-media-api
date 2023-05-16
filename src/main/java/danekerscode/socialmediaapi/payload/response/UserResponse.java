@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data @AllArgsConstructor @NoArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class UserResponse {
     private Integer id;
@@ -18,5 +20,8 @@ public class UserResponse {
     private GENDER gender;
     private Integer age;
     private String imageURL;
+    private String email;
+    private UserStatus userStatus;
     private List<Channel> channels;
+
 }

@@ -23,4 +23,9 @@ public class KafkaListenerController{
         mailService.sendCodeToUpdatePassword(request);
     }
 
+    @KafkaListener(topics = "activationCode" , groupId = "myGroup")
+    void sendActivationCode(EmailRequest request){
+        mailService.sendActivationCode(request);
+    }
+
 }

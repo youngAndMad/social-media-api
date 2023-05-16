@@ -131,11 +131,11 @@ The app defines following CRUD APIs.
 ##### <a id="signin">User Request</a>
 ```json
 {
-	"firstName": "Daneker",
-	"lastName": "Graham",
+   "firstName": "Daneker",
+   "lastName": "Graham",
    "age" : 17,
-	"password": "password",
-	"email": "kkraken2005@gmail.com",
+   "password": "password",
+   "email": "kkraken2005@gmail.com",
    "gender" : "Male",
    "address" : {
       "country" : "Kz",

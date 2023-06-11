@@ -2,7 +2,6 @@ package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.jwt.JWTUtil;
-import danekerscode.socialmediaapi.model.User;
 import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
 import danekerscode.socialmediaapi.payload.request.EmailRequest;
 import danekerscode.socialmediaapi.payload.request.PasswordRequest;
@@ -14,8 +13,6 @@ import danekerscode.socialmediaapi.service.interfaces.UserService;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import static java.time.LocalDateTime.now;
@@ -30,20 +27,33 @@ public class AuthenticationController {
     private final UserService userService;
     private final CustomValidator validator;
     private final KafkaService kafkaService;
+    private final JWTUtil util;
 
     @PostMapping("registration")
     public ResponseEntity<CustomResponse> registration(@RequestBody UserRequest request) {
         var userId = userService.save(request).getId();
+        /*
+        булдрсем кайттан жазаснба
+
+
+
+         */
         return new ResponseEntity<>(
                 CustomResponse.builder()
                         .timeStamp(now())
-                        .data(userService.createTokenResponse(request.email() , userId))
+                        .data(userService.createTokenResponse(request.email(), userId))
                         .message("user id:" + userId)
                         .reason("User has been registered successfully")
                         .status(CREATED)
                         .statusCode(CREATED.value())
                         .build(),
                 CREATED);
+    }
+
+    @PostMapping("fake/jwt")
+    public ResponseEntity<?> t(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity
+                .ok(new TokenResponse(util.generateToken(request.email()), 43));
     }
 
     @GetMapping("update/password")

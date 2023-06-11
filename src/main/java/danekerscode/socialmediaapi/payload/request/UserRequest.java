@@ -9,5 +9,5 @@ public record UserRequest(
                 String gender,
                 String status,
                 Boolean isPrivateAccount,
-                AddressRequest address) implements Request {
+                AddressRequest address) {
 }

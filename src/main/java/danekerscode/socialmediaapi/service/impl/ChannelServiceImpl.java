@@ -7,7 +7,6 @@ import danekerscode.socialmediaapi.model.Channel;
 import danekerscode.socialmediaapi.model.Post;
 import danekerscode.socialmediaapi.payload.request.ChannelRequest;
 import danekerscode.socialmediaapi.payload.request.PostRequest;
-import danekerscode.socialmediaapi.payload.request.Request;
 import danekerscode.socialmediaapi.repository.ChannelRepository;
 import danekerscode.socialmediaapi.repository.PostRepository;
 import danekerscode.socialmediaapi.repository.UserRepository;
@@ -25,9 +24,8 @@ import static danekerscode.socialmediaapi.utils.Converter.toPost;
 
 @Service
 @RequiredArgsConstructor
-public class ChannelServiceImpl implements
-        ChannelService,
-        PostService {
+public class ChannelServiceImpl
+        implements ChannelService, PostService {
 
     private final ChannelRepository channelRepository;
     private final UserRepository userRepository;
@@ -88,9 +86,8 @@ public class ChannelServiceImpl implements
     }
 
     @Override
-    public void update(Request request, Integer id) {
+    public void update(ChannelRequest channelRequest, Integer id) {
         Channel channel = channelRepository.findById(id).orElseThrow(() -> new EntityPropertiesException("invalid id for channel"));
-        ChannelRequest channelRequest = (ChannelRequest) request;
         customValidator.validateChannel(channelRequest);
         channel.setContent(ChannelContent.valueOf(channelRequest.content()));
         channel.setName(channelRequest.name());

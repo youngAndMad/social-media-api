@@ -4,7 +4,7 @@ import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.model.Message;
 import danekerscode.socialmediaapi.payload.request.MessageRequest;
-import danekerscode.socialmediaapi.payload.request.Request;
+import danekerscode.socialmediaapi.payload.request.UpdateMessageRequest;
 import danekerscode.socialmediaapi.repository.ChatRepository;
 import danekerscode.socialmediaapi.repository.MessageRepository;
 import danekerscode.socialmediaapi.repository.UserRepository;
@@ -40,6 +40,14 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public void update(UpdateMessageRequest request, Integer id) {
+            var msg = messageRepository.findById(id).orElseThrow(() -> new EntityPropertiesException("invalid message id"));
+            msg.setText(request.updatedMessage());
+            msg.setId(id);
+            messageRepository.save(msg);
+    }
+
+    @Override
     public void deleteByID(Integer id) {
         messageRepository.deleteById(id);
     }
@@ -54,11 +62,4 @@ public class MessageServiceImpl implements MessageService {
         return messageRepository.findAll();
     }
 
-    @Override
-    public void update(Request request, Integer id) {
-        var msg = messageRepository.findById(id).orElseThrow(() -> new EntityPropertiesException("invalid message id"));
-        msg.setText(((MessageRequest)request).text());
-        msg.setId(id);
-        messageRepository.save(msg);
-    }
 }

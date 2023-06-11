@@ -13,6 +13,7 @@ import danekerscode.socialmediaapi.utils.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -116,6 +117,13 @@ public class FriendServiceImpl implements FriendService {
         return !checkUser(firstUserId, secondUserId, this::getFriendListByUserId) ? FRIEND
                 : !checkUser(firstUserId, secondUserId, this::getBlackListByUserId) ? BLOCKED
                 : NEUTRAL;
+    }
+
+    @Override
+    public List<UserResponse> getUserList(String status, Integer id) {
+        return status.equals("friend") ? getFriendListByUserId(id)
+                : status.equals("block") ? getBlackListByUserId(id)
+                : Collections.emptyList();
     }
 
     private boolean checkUser(Integer firstUserId, Integer secondUserId,

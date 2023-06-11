@@ -57,7 +57,7 @@ public class ChatController {
         return ResponseEntity.ok("user with id:" + userId + " joined chat with id:" + chatId);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("all")
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok(chatService.getAll());

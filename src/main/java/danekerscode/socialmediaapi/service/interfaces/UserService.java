@@ -1,10 +1,7 @@
 package danekerscode.socialmediaapi.service.interfaces;
 
 import danekerscode.socialmediaapi.model.User;
-import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
-import danekerscode.socialmediaapi.payload.request.PasswordRequest;
-import danekerscode.socialmediaapi.payload.request.StatusUpdateRequest;
-import danekerscode.socialmediaapi.payload.request.UserRequest;
+import danekerscode.socialmediaapi.payload.request.*;
 import danekerscode.socialmediaapi.payload.response.TokenResponse;
 import danekerscode.socialmediaapi.payload.response.UserResponse;
 
@@ -25,4 +22,6 @@ public interface UserService extends ParentService<User> {
     TokenResponse authenticate(AuthenticationRequest authenticationRequest);
 
     TokenResponse createTokenResponse(String email, Integer userId);
+
+    void update(UserUpdateRequest userRequest, Integer id);
 }

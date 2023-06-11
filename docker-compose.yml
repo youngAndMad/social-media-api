@@ -7,7 +7,7 @@ services:
     ports:
       - "8081:8081"
     build:
-      context: .
+      context: api-gateway
     container_name: mailSender
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
@@ -21,7 +21,7 @@ services:
     ports:
       - "8080:8080"
     build:
-      context: .
+      context: api-gateway
     container_name: app
     depends_on:
       - db

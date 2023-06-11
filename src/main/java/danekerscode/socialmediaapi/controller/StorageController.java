@@ -4,12 +4,8 @@ import danekerscode.socialmediaapi.constants.FileAddress;
 import danekerscode.socialmediaapi.service.interfaces.StorageService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,8 +21,8 @@ public class StorageController {
 
     @PostMapping("/save/{address}/{id}")
     public ResponseEntity<?> save(@PathVariable String address,
-            @PathVariable Integer id,
-            @RequestBody @NonNull MultipartFile file) {
+                                  @PathVariable Integer id,
+                                  @RequestBody @NonNull MultipartFile file) {
         return ResponseEntity
                 .ok(this.storageService.uploadFile(file, FileAddress.valueOf(address), id) ? HttpStatus.ACCEPTED
                         : HttpStatus.METHOD_NOT_ALLOWED);
@@ -34,7 +30,7 @@ public class StorageController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id,
-            @RequestParam("name") String fileName, @RequestParam("postId") Integer postId) {
+                                    @RequestParam("name") String fileName, @RequestParam("postId") Integer postId) {
         return ResponseEntity.ok(this.storageService.deleteFile(fileName, postId, id));
     }
 

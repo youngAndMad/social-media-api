@@ -5,5 +5,5 @@ public record UserUpdateRequest(String firstName,
         String status,
         Integer age,
         String gender,
-        Boolean privateAccount) implements Request {
+        Boolean privateAccount) {
 }

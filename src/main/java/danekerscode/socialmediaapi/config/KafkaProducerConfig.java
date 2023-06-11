@@ -13,7 +13,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
+// @Configuration
 public class KafkaProducerConfig {
 
     @Value("${io.reflectoring.kafka.bootstrapServers}")
@@ -21,11 +21,13 @@ public class KafkaProducerConfig {
 
     @Bean
     public Map<String, Object> producerConfig() {
-        return new HashMap<>() {{
-            put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-            put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-            put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        }};
+        return new HashMap<>() {
+            {
+                put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+                put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+                put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+            }
+        };
 
     }
 

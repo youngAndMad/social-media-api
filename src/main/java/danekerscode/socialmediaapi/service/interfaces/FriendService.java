@@ -22,4 +22,6 @@ public interface FriendService {
     List<UserResponse> getBlackListByUserId(Integer id);
 
     UserStatus getUserStatus(Integer firstUserId , Integer secondUserId);
+
+    List<UserResponse> getUserList(String status, Integer id);
 }

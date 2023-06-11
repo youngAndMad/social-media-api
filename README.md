@@ -14,6 +14,8 @@
 * Kafka(to connect microservices)
 * Mail Sending(With smtp server)
 * Amazon S3 (to store files in web service)
+* Flyway(for migration with database)
+* Microservice architecture
 
 <p align="center">
 <img width="750" heigth="750" src ="https://user-images.githubusercontent.com/113981956/236605159-32540b6f-918b-45d9-a251-72d9552c2474.png" >

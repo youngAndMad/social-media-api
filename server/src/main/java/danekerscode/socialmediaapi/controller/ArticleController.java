@@ -16,7 +16,6 @@ import static danekerscode.socialmediaapi.utils.ReturnError.validateRequest;
 @RestController
 @RequestMapping("article")
 @RequiredArgsConstructor
-@CrossOrigin
 public class ArticleController {
 
     private final ArticleService articleService;

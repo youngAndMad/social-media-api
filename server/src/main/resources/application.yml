@@ -1,6 +1,6 @@
 spring:
   mvc:
-    mapping: "*"
+    mapping: "/**"
     allowed:
       credentials: true
       origin-patterns: "http://localhost:4200/"

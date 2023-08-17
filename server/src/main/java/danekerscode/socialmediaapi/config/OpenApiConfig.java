@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         email = "kkraken2005@gmail.com", url = "t.me/youngAndMad"
                 ),
                 description = "OpenApi documentation for Moodle clone",
-                title = "OpenApi specification - Moodle",
+                title = "OpenApi specification - Social media api",
                 version = "1.0",
                 license = @License(
                         name = "Licence name",

@@ -11,7 +11,6 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 
 @RequiredArgsConstructor
-@CrossOrigin
 @RestController
 @RequestMapping("notification")
 public class NotificationController {

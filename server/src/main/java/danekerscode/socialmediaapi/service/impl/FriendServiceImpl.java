@@ -8,7 +8,6 @@ import danekerscode.socialmediaapi.payload.response.UserStatus;
 import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.FriendService;
 import danekerscode.socialmediaapi.service.NotificationService;
-import danekerscode.socialmediaapi.utils.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

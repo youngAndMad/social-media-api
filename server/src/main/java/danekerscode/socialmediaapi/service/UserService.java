@@ -11,8 +11,6 @@ public interface UserService {
 
     User save(UserDTO userDTO);
 
-    UserResponse getPageToVisit(Integer id);
-
     void updateStatus(StatusUpdateDTO request, Integer id);
 
     void update(UserDTO userDTO, Integer id);

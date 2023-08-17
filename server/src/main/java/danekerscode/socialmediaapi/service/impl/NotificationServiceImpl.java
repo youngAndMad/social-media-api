@@ -1,13 +1,10 @@
 package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
-import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.mapper.NotificationMapper;
 import danekerscode.socialmediaapi.repository.NotificationRepository;
-import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.NotificationService;
 import danekerscode.socialmediaapi.service.UserService;
-import danekerscode.socialmediaapi.utils.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

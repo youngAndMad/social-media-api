@@ -1,25 +1,17 @@
 package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.EntityNotFoundException;
-import danekerscode.socialmediaapi.exception.EntityPropertiesException;
-import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.mapper.MessageMapper;
 import danekerscode.socialmediaapi.model.Message;
 import danekerscode.socialmediaapi.payload.request.MessageDTO;
 import danekerscode.socialmediaapi.payload.request.UpdateMessageDTO;
-import danekerscode.socialmediaapi.repository.ChatRepository;
 import danekerscode.socialmediaapi.repository.MessageRepository;
-import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.ChatService;
 import danekerscode.socialmediaapi.service.MessageService;
 import danekerscode.socialmediaapi.service.UserService;
-import danekerscode.socialmediaapi.utils.Converter;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

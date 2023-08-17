@@ -43,13 +43,6 @@ public class UserController {
                 .ok(userService.getById(id));
     }
 
-    @GetMapping("visit/{id}")
-    public ResponseEntity<?> getVisitPage(
-            @PathVariable Integer id
-    ) {
-        return ResponseEntity.ok(userService.getPageToVisit(id));
-    }
-
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
     public void delete(

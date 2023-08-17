@@ -1,22 +1,16 @@
 package danekerscode.socialmediaapi.service.impl;
 
-import danekerscode.socialmediaapi.exception.EntityPropertiesException;
-import danekerscode.socialmediaapi.exception.UserNotFoundException;
 import danekerscode.socialmediaapi.mapper.CommentMapper;
 import danekerscode.socialmediaapi.model.Comment;
 import danekerscode.socialmediaapi.payload.request.CommentDTO;
 import danekerscode.socialmediaapi.repository.CommentRepository;
-import danekerscode.socialmediaapi.repository.PostRepository;
-import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.CommentService;
 import danekerscode.socialmediaapi.service.PostService;
 import danekerscode.socialmediaapi.service.UserService;
-import danekerscode.socialmediaapi.utils.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service

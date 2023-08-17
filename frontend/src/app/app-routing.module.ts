@@ -5,7 +5,7 @@ import { KeycloakGuard } from "./guard/keycloak.guard";
 import { RegistrationComponent } from "./components/registration/registration.component";
 
 const routes: Routes = [
-  { path: '', component: AppComponent, canActivate: [KeycloakGuard] },
+  { path: '', component: AppComponent },
   { path: 'registration', component: RegistrationComponent }
 ];
 

@@ -45,7 +45,7 @@
           </div>
         </div>
       </mat-step>
-      <mat-step [stepControl]="addressForm" label="Fill out contact info">
+      <mat-step [stepControl]="addressForm" label="Fill out address info">
         <div formGroupName="address" class="form_wrapper">
           <mat-form-field appearance="fill">
             <mat-label>Country</mat-label>
@@ -80,10 +80,7 @@
           <div>
             <button mat-raised-button color="primary" matStepperPrevious>Back</button>
             |
-            <button class="btn btn-primary"
-                    type="submit"
-                    [disabled]="!addressForm.valid"
-                    (click)="registration()">
+            <button class="btn btn-primary" type="submit" [disabled]="!addressForm.valid" (click)="registration()">
               Registration
             </button>
           </div>
@@ -92,4 +89,3 @@
     </mat-stepper>
   </form>
 </div>
-

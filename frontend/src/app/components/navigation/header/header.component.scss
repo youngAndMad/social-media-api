@@ -1,0 +1,26 @@
+// Define variables if needed
+$main-color: white;
+$hover-color: lightgray;
+
+a {
+  text-decoration: none;
+  color: $main-color;
+
+  &:hover, &:active {
+    color: $hover-color;
+  }
+}
+
+.navigation-items {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+mat-toolbar {
+  border-radius: 3px;
+
+  @media (max-width: 959px) {
+    border-radius: 0;
+  }
+}

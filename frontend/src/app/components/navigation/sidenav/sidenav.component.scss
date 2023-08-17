@@ -1,0 +1,17 @@
+// Define variables if needed
+$main-color: white;
+$hover-color: lightgray;
+
+a {
+  text-decoration: none;
+  color: $main-color;
+
+  &:hover, &:active {
+    color: $hover-color;
+  }
+}
+
+.nav-caption {
+  display: inline-block;
+  padding-left: 6px;
+}

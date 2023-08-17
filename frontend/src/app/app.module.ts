@@ -17,11 +17,20 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { HeaderComponent } from './components/navigation/header/header.component';
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { SidenavComponent } from './components/navigation/sidenav/sidenav.component';
+import { MatListModule } from "@angular/material/list";
+import { MatMenuModule } from "@angular/material/menu";
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    HeaderComponent,
+    SidenavComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,7 +46,12 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
     MatButtonModule,
     MatOptionModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    FlexLayoutModule,
+    MatListModule,
+    MatMenuModule
   ],
   providers: [
     {

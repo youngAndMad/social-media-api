@@ -20,10 +20,13 @@ public interface MessageMapper {
 
     @Mapping(target = "sentAt" , expression = "java(LocalDateTime.now())")
     @Mapping(target = "id" , ignore = true)
+    @Mapping(target = "sender" , expression = "java(sender)")
+    @Mapping(target = "chat" , expression = "java(chat)")
     @Mapping(target = "senderFullName", expression = "java(userFullName(sender))")
     Message toMessage(MessageDTO dto , User sender, Chat chat);
 
     @Mapping(target = "text" , expression = "java(dto.updatedMessage())")
+    @Mapping(target = "sender" , ignore = true)
     void update(@MappingTarget Message message , UpdateMessageDTO dto);
 
 

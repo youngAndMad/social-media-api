@@ -1,6 +1,20 @@
 spring:
+  mvc:
+    mapping: "*"
+    allowed:
+      credentials: true
+      origin-patterns: "http://localhost:4200/"
+      headers: "*"
+      methods: "*"
+  security:
+    jwt:
+      issuer: social_media_api
+      secret: dandkepforjweitvgbnueiwdojkefjpeving
   cloud:
     aws:
+      bucket:
+        name: name
+        url: ur
       region: us-east-01
       credentials:
         access-key: access
@@ -31,3 +45,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         default_schema: public
+server:
+  servlet:
+    context-path: /api/v1/

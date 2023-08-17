@@ -1,15 +1,16 @@
 package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.payload.request.ChatDTO;
-import danekerscode.socialmediaapi.payload.response.CustomResponse;
 import danekerscode.socialmediaapi.service.impl.ChatServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import static java.time.LocalDateTime.now;
-import static org.springframework.http.HttpStatus.CREATED;
+import javax.validation.Valid;
+
+import static danekerscode.socialmediaapi.utils.ReturnError.validateRequest;
+import static org.springframework.http.HttpStatus.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,48 +18,49 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class ChatController {
     private final ChatServiceImpl chatService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getChat(@PathVariable Integer id) {
-        return ResponseEntity.ok(chatService.getById(id));
+    @GetMapping("{id}")
+    public ResponseEntity<?> getChat(
+            @PathVariable Integer id
+    ) {
+        return ResponseEntity
+                .ok(chatService.getById(id));
     }
 
-    @PostMapping("/new")
-    public ResponseEntity<?> createChat(@RequestBody ChatDTO chatDTO) {
-        return ResponseEntity.ok(
-                CustomResponse.builder()
-                        .timeStamp(now())
-                        .status(CREATED)
-                        .statusCode(CREATED.value())
-                        .data("chat id:" + chatService.createChat(chatDTO).getId())
-                        .message("chat successfully created. Chat type:" + chatDTO.type())
-                        .build()
-        );
+    @PostMapping()
+    public ResponseEntity<?> createChat(
+            @RequestBody @Valid ChatDTO chatDTO,
+            BindingResult br
+    ) {
+        validateRequest(br);
+        return ResponseEntity.status(201)
+                .body(chatService.createChat(chatDTO));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteChat(@PathVariable Integer id) {
-        chatService.deleteByID(id);
-        return ResponseEntity.ok("chat by id deleted");
+    @ResponseStatus(NO_CONTENT)
+    public void deleteChat(
+            @PathVariable Integer id
+    ) {
+        chatService.deleteById(id);
     }
 
     @PutMapping("leave")
-    public ResponseEntity<?> leaveChat(@RequestParam(value = "chatId") Integer chatId,
-                                       @RequestParam(value = "userId") Integer userId) {
+    @ResponseStatus(ACCEPTED)
+    public void leaveChat(
+            @RequestParam(value = "chatId") Integer chatId,
+            @RequestParam(value = "userId") Integer userId
+    ) {
         chatService.leaveChat(userId, chatId);
-        return ResponseEntity.ok("user with id:" + userId + " leaved chat with id:" + chatId);
     }
 
     @PutMapping("join")
-    public ResponseEntity<?> joinChat(@RequestParam(value = "chatId") Integer chatId,
-                                      @RequestParam(value = "userId") Integer userId) {
-        chatService.joinChat(userId , chatId);
-        return ResponseEntity.ok("user with id:" + userId + " joined chat with id:" + chatId);
+    @ResponseStatus(ACCEPTED)
+    public void joinChat(
+            @RequestParam(value = "chatId") Integer chatId,
+            @RequestParam(value = "userId") Integer userId
+    ) {
+        chatService.joinChat(userId, chatId);
     }
 
-    @PreAuthorize(value = "hasRole('ADMIN')")
-    @GetMapping("all")
-    public ResponseEntity<?> getAll(){
-        return ResponseEntity.ok(chatService.getAll());
-    }
 
 }

@@ -8,25 +8,28 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    // @Value("${cors.allowedOrigins}")
-    // private String allowedOrigins;
+    @Value("${spring.mvc.allowed.headers}")
+    private String allowedHeaders;
 
-    @Value("${cors.headers}")
-    private String headers;
+    @Value("${spring.mvc.allowed.methods}")
+    private String allowedMethods;
 
-    @Value("${cors.path.pattern}")
-    private String pathPattern;
+    @Value("${spring.mvc.allowed.credentials}")
+    private Boolean allowedCredentials;
+
+    @Value("${spring.mvc.mapping}")
+    private String mapping;
+
+    @Value("${spring.mvc.allowed.origin-patterns}")
+    private String originPatterns;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        final long MAX_AGE_SECS = 3600;
-
-        registry.addMapping(pathPattern)
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders(headers)
-                .maxAge(MAX_AGE_SECS);
-
+        registry.addMapping(mapping)
+         .allowCredentials(allowedCredentials)
+         .allowedOriginPatterns(originPatterns)
+         .allowedHeaders(allowedHeaders)
+         .allowedMethods(allowedMethods);
     }
 
 }

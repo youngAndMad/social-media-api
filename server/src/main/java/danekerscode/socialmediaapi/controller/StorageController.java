@@ -18,12 +18,14 @@ public class StorageController {
     private final StorageService storageService;
 
     @PostMapping("/save/{address}/{id}")
-    public ResponseEntity<?> save(@PathVariable String address,
-                                  @PathVariable Integer id,
-                                  @RequestBody @NonNull MultipartFile file) {
+    public ResponseEntity<?> save(
+            @PathVariable FileAddress address,
+            @PathVariable Integer id,
+            @RequestBody @NonNull MultipartFile file
+    ) {
         return ResponseEntity
-                .ok(this.storageService.uploadFile(file, FileAddress.valueOf(address), id) ? HttpStatus.ACCEPTED
-                        : HttpStatus.METHOD_NOT_ALLOWED);
+                .ok(this.storageService.uploadFile(file, address, id) ? HttpStatus.ACCEPTED
+                        : HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/{id}")

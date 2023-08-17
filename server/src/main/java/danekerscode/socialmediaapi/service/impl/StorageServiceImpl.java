@@ -16,15 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
-import static danekerscode.socialmediaapi.utils.Converter.convertMultiPartFileToFile;
+import static danekerscode.socialmediaapi.utils.FileUtils.convertMultiPartFileToFile;
+
 
 @Service
 @RequiredArgsConstructor
 public class StorageServiceImpl implements StorageService {
-    @Value("${application.bucket.name}")
+    @Value("${spring.cloud.aws.bucket.name}")
     private String bucketName;
 
-    @Value("${application.bucket.url}")
+    @Value("${spring.cloud.aws.bucket.url}")
     private String bucketUrl;
 
     private final AmazonS3 amazonClient;

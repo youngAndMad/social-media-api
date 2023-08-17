@@ -19,7 +19,9 @@ public class MessageController {
     @PostMapping("new")
     @MessageMapping("/message")
     @SendTo("/chat/message")
-    public ResponseEntity<?> addMessage(@RequestBody MessageDTO messageDTO) {
+    public ResponseEntity<?> addMessage(
+            @RequestBody MessageDTO messageDTO
+    ) {
         return ResponseEntity.ok(messageService.save(messageDTO));
     }
 
@@ -27,14 +29,16 @@ public class MessageController {
     @MessageMapping("/message/delete")
     @SendTo("/chat/message")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        messageService.deleteByID(id);
+        messageService.deleteById(id);
         return ResponseEntity.ok("message deleted");
     }
 
     @PutMapping()
     @MessageMapping("/message/update")
     @SendTo("/chat/message")
-    public ResponseEntity<?> update(@RequestBody UpdateMessageDTO request) {
+    public ResponseEntity<?> update(
+            @RequestBody UpdateMessageDTO request
+    ) {
         messageService.update(request, request.id());
         return ResponseEntity.ok("updated");
     }

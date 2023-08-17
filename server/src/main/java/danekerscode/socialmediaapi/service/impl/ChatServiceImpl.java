@@ -15,9 +15,7 @@ import danekerscode.socialmediaapi.utils.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +36,7 @@ public class ChatServiceImpl implements ChatService {
             throw new EntityPropertiesException("these users already have a chat");
         }
 
-        List<User> users = new ArrayList<>() {
+        Set<User> users = new HashSet<>() {
             {
                 add(firstUser);
                 add(secondUser);

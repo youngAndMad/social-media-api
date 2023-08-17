@@ -15,5 +15,6 @@ public interface ChannelMapper {
     @Mapping(target = "id" , ignore = true)
     Channel toChannel(ChannelDTO dto , User owner);
 
+    @Mapping(target = "owner" ,ignore = true)
     void update(ChannelDTO dto, @MappingTarget Channel channel);
 }

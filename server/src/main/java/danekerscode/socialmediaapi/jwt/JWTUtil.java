@@ -13,8 +13,10 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    @Value("${jwt.secret}")
+    @Value("${spring.security.jwt.secret}")
     private String secret;
+    @Value("${spring.security.jwt.issuer}")
+    private String issuer;
 
     public String generateToken(String email) {
         Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60 * 24).toInstant());
@@ -24,7 +26,7 @@ public class JWTUtil {
                 .withSubject("user")
                 .withClaim("email", email)
                 .withIssuedAt(new Date())
-                .withIssuer("social-api")
+                .withIssuer(issuer)
                 .withExpiresAt(expirationDate)
                 .sign(Algorithm.HMAC256(secret));
     }
@@ -32,7 +34,7 @@ public class JWTUtil {
     public String validateTokenAndRetrieveClaim(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
                 .withSubject("user")
-                .withIssuer("social-api")
+                .withIssuer(issuer)
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);

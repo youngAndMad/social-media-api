@@ -1,46 +1,48 @@
 package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.payload.request.CommentDTO;
-import danekerscode.socialmediaapi.payload.response.CustomResponse;
 import danekerscode.socialmediaapi.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import javax.validation.Valid;
 
-import static java.time.LocalDateTime.now;
-import static org.springframework.http.HttpStatus.CREATED;
+import static danekerscode.socialmediaapi.utils.ReturnError.validateRequest;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("comment")
 public class CommentController {
+
     private final CommentService commentService;
 
-    @PostMapping("new")
-    public ResponseEntity<?> doComment(@RequestBody CommentDTO commentDTO) {
-        return new ResponseEntity<>(
-                CustomResponse.builder()
-                        .status(CREATED)
-                        .statusCode(CREATED.value())
-                        .timeStamp(now())
-                        .message("successfully commented")
-                        .data(Map.of("commentId", commentService.save(commentDTO).getId()))
-                        .build(),
-                CREATED);
+    @PostMapping()
+    public ResponseEntity<?> doComment(
+            @RequestBody @Valid CommentDTO commentDTO,
+            BindingResult br
+    ) {
+        validateRequest(br);
+        return ResponseEntity.
+                status(201)
+                .body(commentService.save(commentDTO));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> get(@PathVariable Integer id) {
-        var comment = commentService.getById(id);
-        return comment.isEmpty() ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(comment.get());
+    public ResponseEntity<?> get(
+            @PathVariable Integer id
+    ) {
+        return ResponseEntity
+                .ok(commentService.getPostComments(id));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
-        commentService.deleteByID(id);
-        return ResponseEntity.ok("comment by id deleted. Id:" + id);
+    @ResponseStatus(NO_CONTENT)
+    public void delete(
+            @PathVariable Integer id
+    ) {
+        commentService.deleteById(id);
     }
 }

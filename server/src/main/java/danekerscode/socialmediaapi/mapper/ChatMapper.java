@@ -7,11 +7,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface ChatMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "users" , expression = "java(users)")
-    Chat toChat(ChatDTO chatDTO, List<User> users);
+    Chat toChat(ChatDTO chatDTO, Set<User> users);
 }

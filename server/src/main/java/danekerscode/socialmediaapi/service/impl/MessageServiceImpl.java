@@ -9,7 +9,6 @@ import danekerscode.socialmediaapi.repository.MessageRepository;
 import danekerscode.socialmediaapi.service.ChatService;
 import danekerscode.socialmediaapi.service.MessageService;
 import danekerscode.socialmediaapi.service.UserService;
-import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

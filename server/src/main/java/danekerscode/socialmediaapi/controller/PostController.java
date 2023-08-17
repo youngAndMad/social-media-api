@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.*;
 
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("post")

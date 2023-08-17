@@ -3,6 +3,7 @@ package danekerscode.socialmediaapi.mapper;
 import danekerscode.socialmediaapi.constants.Role;
 import danekerscode.socialmediaapi.model.User;
 import danekerscode.socialmediaapi.payload.request.UserDTO;
+import danekerscode.socialmediaapi.payload.response.UserResponse;
 import org.mapstruct.*;
 
 @Mapper(
@@ -20,5 +21,7 @@ public interface UserMapper {
     User toUser(UserDTO userDTO);
 
     void update(UserDTO updateRequest, @MappingTarget User user);
+
+    UserResponse toUserResponse(User user);
 }
 

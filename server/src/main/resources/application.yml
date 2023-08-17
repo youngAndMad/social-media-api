@@ -10,7 +10,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8090/auth/realms/master/protocol/openid-connect/certs
+          jwk-set-uri: http://localhost:8080/auth/realms/master/protocol/openid-connect/certs
   cloud:
     aws:
       bucket:
@@ -49,3 +49,4 @@ spring:
 server:
   servlet:
     context-path: /api/v1/
+  port: 8090

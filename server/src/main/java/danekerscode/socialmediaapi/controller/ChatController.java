@@ -14,6 +14,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin
 @RequestMapping("chat")
 public class ChatController {
     private final ChatServiceImpl chatService;

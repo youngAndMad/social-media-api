@@ -15,6 +15,7 @@ import static org.springframework.http.HttpStatus.ACCEPTED;
 @RestController
 @RequestMapping("channel")
 @RequiredArgsConstructor
+@CrossOrigin
 public class ChannelController {
 
     private final ChannelService channelService;

@@ -1,12 +1,15 @@
 package danekerscode.socialmediaapi.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
+@EnableWebMvc
+public class WebMvcConfig {
 
     @Value("${spring.mvc.allowed.headers}")
     private String allowedHeaders;
@@ -23,13 +26,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${spring.mvc.allowed.origin-patterns}")
     private String originPatterns;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping(mapping)
-         .allowCredentials(allowedCredentials)
-         .allowedOriginPatterns(originPatterns)
-         .allowedHeaders(allowedHeaders)
-         .allowedMethods(allowedMethods);
+    @Bean
+    public WebMvcConfigurer webMvcConfigurer(){
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                System.out.println("hii");
+                registry.addMapping(mapping)
+                        .allowCredentials(allowedCredentials)
+                        .allowedOriginPatterns(originPatterns)
+                        .allowedHeaders(allowedHeaders)
+                        .allowedMethods(allowedMethods);
+            }
+        };
     }
 
 }

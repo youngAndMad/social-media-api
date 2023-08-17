@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import static danekerscode.socialmediaapi.utils.ReturnError.validateRequest;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("comment")

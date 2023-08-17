@@ -2,21 +2,22 @@ package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.EntityNotFoundException;
 import danekerscode.socialmediaapi.model.Article;
+import danekerscode.socialmediaapi.mapper.ArticleMapper;
+import danekerscode.socialmediaapi.payload.request.ArticleDTO;
 import danekerscode.socialmediaapi.repository.ArticleRepository;
 import danekerscode.socialmediaapi.service.ArticleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleMapper articleMapper;
 
     @Override
     public void deleteByID(Integer id) {
@@ -36,14 +37,9 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public Article save(Article article) {
-        try {
-            return this.articleRepository.save(article);
-        }catch (DataIntegrityViolationException e){
-            System.out.println(article.toString());
-            System.out.println(e.getMessage().toUpperCase());
-        }
-        return null;
+    public Article save(ArticleDTO  articleDTO) {
+        return articleRepository
+                .save(articleMapper.toArticle(articleDTO));
     }
 
 }

@@ -1,11 +1,12 @@
 package danekerscode.socialmediaapi.service;
 
 import danekerscode.socialmediaapi.model.Article;
+import danekerscode.socialmediaapi.payload.request.ArticleDTO;
 
 import java.util.List;
 
 public interface ArticleService {
-    Article save(Article article);
+    Article save(ArticleDTO articleDTO);
 
     void deleteByID(Integer id);
 

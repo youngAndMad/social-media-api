@@ -18,11 +18,6 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Data
-    static class Source {
-        private String name;
-    }
-
     private String author;
     private String title;
     private String description;

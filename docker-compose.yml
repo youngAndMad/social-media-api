@@ -2,39 +2,25 @@ version: '3.8'
 
 services:
 
-  mailSender:
-    image: 'docker-spring-boot:latest'
-    ports:
-      - "8081:8081"
-    build:
-      context: api-gateway
-    container_name: mailSender
+  kc_db:
+    image: postgres:13.5
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=qwerty
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-
-
-  app:
-    image: 'docker-spring-boot-postgres:latest'
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: my_admin
+      POSTGRES_PASSWORD: my_password
+      POSTGRES_DB: keycloak_db
+    ports:
+      - "5432:5432"
+  kc:
+    image: jboss/keycloak:11.0.2
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: kc_db
+      DB_DATABASE: keycloak_db
+      DB_USER: my_admin
+      DB_SCHEMA: public
+      DB_PASSWORD: my_password
     ports:
       - "8080:8080"
-    build:
-      context: api-gateway
-    container_name: app
     depends_on:
-      - db
-      - mailSender
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=qwerty
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-
-  db:
-    image: 'postgres:15.1-alpine'
-    container_name: db
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=qwerty
+      - kc_db

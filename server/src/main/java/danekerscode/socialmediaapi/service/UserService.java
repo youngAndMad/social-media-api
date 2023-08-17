@@ -11,15 +11,9 @@ public interface UserService {
 
     User save(UserDTO userDTO);
 
-    void updatePassword(PasswordUpdateDTO passwordUpdateDTO);
-
     UserResponse getPageToVisit(Integer id);
 
     void updateStatus(StatusUpdateDTO request, Integer id);
-
-    TokenResponse authenticate(AuthenticationDTO authenticationDTO);
-
-    TokenResponse createTokenResponse(String email, Integer userId);
 
     void update(UserDTO userDTO, Integer id);
 

@@ -11,29 +11,33 @@ import java.util.Properties;
 @Configuration
 public class MailConfig {
 
-    @Value("${host}")
+    @Value("${spring.mail.host}")
     private String host;
 
-    @Value("${port}")
+    @Value("${spring.mail.port}")
     private Integer port;
 
-    @Value("${password}")
+    @Value("${spring.mail.password}")
     private String password;
 
-    @Value("${protocol}")
+    @Value("${spring.mail.protocol}")
     private String protocol;
 
-    @Value("${protocolType}")
+    @Value("${spring.mail.protocolType}")
     private String protocolType;
 
-    @Value("${mailDebug}")
+    @Value("${spring.mail.mailDebug}")
     private String mailDebug;
 
-    @Value("${danekerscode}")
+    @Value("${spring.mail.danekerscode}")
     private String danekerscode;
 
-    @Value("${enable}")
+    @Value("${spring.mail.enable}")
     private String enable;
+
+
+    @Value("${spring.mail.username}")
+    private String username;
 
     @Bean
     public JavaMailSender getMailSender() {
@@ -42,7 +46,7 @@ public class MailConfig {
 
         mailSender.setHost(this.host);
         mailSender.setPort(this.port);
-        mailSender.setUsername("****");
+        mailSender.setUsername(this.username);
         mailSender.setPassword(this.password);
 
         Properties properties = mailSender.getJavaMailProperties();

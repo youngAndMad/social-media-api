@@ -1,3 +1,10 @@
 package danekerscode.socialmediaapi.payload.request;
 
-public record CommentDTO(String comment , Integer postId , Integer senderId){}
+import lombok.NonNull;
+
+public record CommentDTO(
+        @NonNull
+        String comment ,
+        Integer postId ,
+        Integer senderId
+){}

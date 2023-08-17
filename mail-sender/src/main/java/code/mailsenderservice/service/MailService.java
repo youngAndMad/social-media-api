@@ -1,7 +1,6 @@
 package code.mailsenderservice.service;
 
 import code.mailsenderservice.utils.EmailRequest;
-import code.mailsenderservice.utils.MailMessageRequest;
 
 public interface MailService {
     void send(MailMessageRequest request);

@@ -1,4 +1,10 @@
 package danekerscode.socialmediaapi.payload.request;
 
-public record PasswordUpdateDTO(String code , String newPassword) {
+import javax.validation.constraints.Size;
+
+public record PasswordUpdateDTO(
+        String code ,
+        @Size(min = 8)
+        String newPassword
+) {
 }

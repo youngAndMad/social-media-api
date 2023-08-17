@@ -1,7 +1,6 @@
 package code.mailsenderservice.service;
 
 import code.mailsenderservice.utils.EmailRequest;
-import code.mailsenderservice.utils.MailMessageRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.SimpleMailMessage;

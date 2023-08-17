@@ -1,5 +1,10 @@
 package danekerscode.socialmediaapi.payload.request;
 
-public record StatusUpdateDTO(String status) {
+import lombok.NonNull;
+
+public record StatusUpdateDTO(
+        @NonNull
+        String status
+) {
 
 }

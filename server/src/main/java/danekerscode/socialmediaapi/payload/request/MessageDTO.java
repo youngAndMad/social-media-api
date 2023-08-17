@@ -1,4 +1,11 @@
 package danekerscode.socialmediaapi.payload.request;
 
-public record MessageDTO(String text, Integer chatId , Integer sender) {
+import lombok.NonNull;
+
+public record MessageDTO(
+        @NonNull
+        String text,
+        Integer chatId ,
+        Integer sender
+) {
 }

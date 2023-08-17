@@ -1,4 +1,7 @@
 package code.mailsenderservice.utils;
 
-public record EmailRequest(String email) {
+public record EmailRequest(
+        String email,
+        String message
+) {
 }

@@ -81,9 +81,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(UserDTO request, Integer id) {
-//        customValidator.validateUpdateUserRequest(request);
         var user = userRepository.findById(id).orElseThrow();
-//        Converter.toUpdatedUser(request, user);
+
+        userMapper.update(request,user);
         this.userRepository.save(user);
     }
 

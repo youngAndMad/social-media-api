@@ -1,4 +1,12 @@
 package danekerscode.socialmediaapi.payload.request;
 
-public record PostDTO(String title , String body , Integer ownerChannelId){
+import lombok.NonNull;
+
+public record PostDTO(
+        @NonNull
+        String title ,
+        @NonNull
+        String body ,
+        Integer ownerChannelId
+){
 }

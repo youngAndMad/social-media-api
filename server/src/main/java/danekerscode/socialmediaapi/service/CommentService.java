@@ -1,11 +1,14 @@
 package danekerscode.socialmediaapi.service;
 
 import danekerscode.socialmediaapi.model.Comment;
-import danekerscode.socialmediaapi.payload.request.CommentRequest;
+import danekerscode.socialmediaapi.payload.request.CommentDTO;
 
 import java.util.List;
 
-public interface CommentService extends ParentService<Comment> {
+public interface CommentService {
     List<Comment> getPostComments(Integer postId);
-    Comment save(CommentRequest commentRequest);
+
+    Comment save(CommentDTO commentDTO);
+
+    void deleteById(Integer id);
 }

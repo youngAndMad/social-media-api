@@ -4,8 +4,12 @@ import danekerscode.socialmediaapi.model.Article;
 
 import java.util.List;
 
-public interface ArticleService extends ParentService<Article> {
+public interface ArticleService {
     Article save(Article article);
 
-    void savaAll(List<Article> articles);
+    void deleteByID(Integer id);
+
+    Article getById(Integer id);
+
+    List<Article> getAll();
 }

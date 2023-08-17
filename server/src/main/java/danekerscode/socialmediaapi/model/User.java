@@ -3,7 +3,7 @@ package danekerscode.socialmediaapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
-import danekerscode.socialmediaapi.constants.GENDER;
+import danekerscode.socialmediaapi.constants.Gender;
 import danekerscode.socialmediaapi.constants.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,7 +40,7 @@ public class User implements UserDetails {
     private String code;
 
     @Enumerated(EnumType.STRING)
-    private GENDER gender;
+    private Gender gender;
 
     @Enumerated(EnumType.STRING)
     @JsonIgnore

@@ -1,7 +1,7 @@
 package danekerscode.socialmediaapi.controller;
 
-import danekerscode.socialmediaapi.payload.request.MessageRequest;
-import danekerscode.socialmediaapi.payload.request.UpdateMessageRequest;
+import danekerscode.socialmediaapi.payload.request.MessageDTO;
+import danekerscode.socialmediaapi.payload.request.UpdateMessageDTO;
 import danekerscode.socialmediaapi.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class MessageController {
     @PostMapping("new")
     @MessageMapping("/message")
     @SendTo("/chat/message")
-    public ResponseEntity<?> addMessage(@RequestBody MessageRequest messageRequest) {
-        return ResponseEntity.ok(messageService.save(messageRequest));
+    public ResponseEntity<?> addMessage(@RequestBody MessageDTO messageDTO) {
+        return ResponseEntity.ok(messageService.save(messageDTO));
     }
 
     @DeleteMapping("{id}")
@@ -34,7 +34,7 @@ public class MessageController {
     @PutMapping()
     @MessageMapping("/message/update")
     @SendTo("/chat/message")
-    public ResponseEntity<?> update(@RequestBody UpdateMessageRequest request) {
+    public ResponseEntity<?> update(@RequestBody UpdateMessageDTO request) {
         messageService.update(request, request.id());
         return ResponseEntity.ok("updated");
     }

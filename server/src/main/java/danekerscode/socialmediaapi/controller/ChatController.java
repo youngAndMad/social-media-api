@@ -1,6 +1,6 @@
 package danekerscode.socialmediaapi.controller;
 
-import danekerscode.socialmediaapi.payload.request.ChatRequest;
+import danekerscode.socialmediaapi.payload.request.ChatDTO;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
 import danekerscode.socialmediaapi.service.impl.ChatServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +23,14 @@ public class ChatController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createChat(@RequestBody ChatRequest chatRequest) {
+    public ResponseEntity<?> createChat(@RequestBody ChatDTO chatDTO) {
         return ResponseEntity.ok(
                 CustomResponse.builder()
                         .timeStamp(now())
                         .status(CREATED)
                         .statusCode(CREATED.value())
-                        .data("chat id:" + chatService.createChat(chatRequest).getId())
-                        .message("chat successfully created. Chat type:" + chatRequest.type())
+                        .data("chat id:" + chatService.createChat(chatDTO).getId())
+                        .message("chat successfully created. Chat type:" + chatDTO.type())
                         .build()
         );
     }

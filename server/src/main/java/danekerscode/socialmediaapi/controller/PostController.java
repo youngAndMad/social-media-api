@@ -1,6 +1,6 @@
 package danekerscode.socialmediaapi.controller;
 
-import danekerscode.socialmediaapi.payload.request.PostRequest;
+import danekerscode.socialmediaapi.payload.request.PostDTO;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
 import danekerscode.socialmediaapi.service.impl.ChannelServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class PostController {
     private final ChannelServiceImpl channelService;
 
     @PostMapping("new")
-    public ResponseEntity<?> addPost(@RequestBody PostRequest request) {
+    public ResponseEntity<?> addPost(@RequestBody PostDTO request) {
         channelService.addPost(request);
         return new ResponseEntity<>(
                 CustomResponse.builder()

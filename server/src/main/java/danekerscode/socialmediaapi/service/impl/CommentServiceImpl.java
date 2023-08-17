@@ -2,12 +2,15 @@ package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
+import danekerscode.socialmediaapi.mapper.CommentMapper;
 import danekerscode.socialmediaapi.model.Comment;
-import danekerscode.socialmediaapi.payload.request.CommentRequest;
+import danekerscode.socialmediaapi.payload.request.CommentDTO;
 import danekerscode.socialmediaapi.repository.CommentRepository;
 import danekerscode.socialmediaapi.repository.PostRepository;
 import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.CommentService;
+import danekerscode.socialmediaapi.service.PostService;
+import danekerscode.socialmediaapi.service.UserService;
 import danekerscode.socialmediaapi.utils.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +22,9 @@ import java.util.Optional;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private final PostRepository postRepository;
-    private final UserRepository userRepository;
+    private final PostService postService;
+    private final UserService userService;
+    private final CommentMapper commentMapper;
     private final CommentRepository commentRepository;
 
     @Override
@@ -28,29 +32,20 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findAllByPostId(postId);
     }
 
-    public Comment save(CommentRequest commentRequest) {
+    public Comment save(CommentDTO commentDTO) {
         return commentRepository
                 .save(
-                        Converter.toComment(
-                                commentRequest,
-                                userRepository.findById(commentRequest.senderId()).orElseThrow(UserNotFoundException::new)
-                                , postRepository.findById(commentRequest.postId()).orElseThrow(() -> new EntityPropertiesException("invalid post id to comment"))
+                        commentMapper.toComment(
+                                commentDTO,
+                                userService.getById(commentDTO.senderId()),
+                                postService.getPostById(commentDTO.postId())
                         )
                 );
     }
 
     @Override
-    public void deleteByID(Integer id) {
+    public void deleteById(Integer id) {
         commentRepository.deleteById(id);
     }
 
-    @Override
-    public Optional<Comment> getById(Integer id) {
-        return commentRepository.findById(id);
-    }
-
-    @Override
-    public List<Comment> getAll() {
-        return commentRepository.findAll();
-    }
 }

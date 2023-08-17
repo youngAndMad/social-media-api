@@ -1,8 +1,7 @@
 package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.payload.request.FriendAction;
-import danekerscode.socialmediaapi.payload.request.StatusUpdateRequest;
-import danekerscode.socialmediaapi.payload.request.UserUpdateRequest;
+import danekerscode.socialmediaapi.payload.request.StatusUpdateDTO;
 import danekerscode.socialmediaapi.payload.response.ErrorResponse;
 import danekerscode.socialmediaapi.service.FriendService;
 import danekerscode.socialmediaapi.service.UserService;
@@ -71,7 +70,7 @@ public class UserController {
     }
 
     @PutMapping("update/status/{id}")
-    public ResponseEntity<?> updateStatus(@RequestBody StatusUpdateRequest request,
+    public ResponseEntity<?> updateStatus(@RequestBody StatusUpdateDTO request,
                                           @PathVariable Integer id) {
         this.userService.updateStatus(request, id);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);

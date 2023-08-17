@@ -2,10 +2,9 @@ package danekerscode.socialmediaapi.controller;
 
 import danekerscode.socialmediaapi.exception.AuthenticationException;
 import danekerscode.socialmediaapi.jwt.JWTUtil;
-import danekerscode.socialmediaapi.payload.request.AuthenticationRequest;
-import danekerscode.socialmediaapi.payload.request.EmailRequest;
-import danekerscode.socialmediaapi.payload.request.PasswordRequest;
-import danekerscode.socialmediaapi.payload.request.UserRequest;
+import danekerscode.socialmediaapi.payload.request.AuthenticationDTO;
+import danekerscode.socialmediaapi.payload.request.PasswordUpdateDTO;
+import danekerscode.socialmediaapi.payload.request.UserDTO;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
 import danekerscode.socialmediaapi.service.KafkaService;
 import danekerscode.socialmediaapi.service.UserService;
@@ -29,7 +28,7 @@ public class AuthenticationController {
     private final JWTUtil util;
 
     @PostMapping("registration")
-    public ResponseEntity<?> registration(@RequestBody UserRequest request) {
+    public ResponseEntity<?> registration(@RequestBody UserDTO request) {
 
         var userId = this.userService.save(request).getId();
 
@@ -70,14 +69,14 @@ public class AuthenticationController {
 
     @PostMapping("update/password")
     public ResponseEntity<?> updatePassword(
-            @RequestBody PasswordRequest passwordRequest) {
-        userService.updatePassword(passwordRequest);
+            @RequestBody PasswordUpdateDTO passwordUpdateDTO) {
+        userService.updatePassword(passwordUpdateDTO);
         return new ResponseEntity<>(ACCEPTED);
     }
 
     @PostMapping("authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
-        return ResponseEntity.ok(userService.authenticate(authenticationRequest));
+    public ResponseEntity<?> authenticate(@RequestBody AuthenticationDTO authenticationDTO) {
+        return ResponseEntity.ok(userService.authenticate(authenticationDTO));
     }
 
 }

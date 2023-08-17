@@ -1,24 +1,22 @@
 package danekerscode.socialmediaapi.service.impl;
 
-import danekerscode.socialmediaapi.constants.ChannelContent;
+import danekerscode.socialmediaapi.exception.EntityNotFoundException;
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
-import danekerscode.socialmediaapi.exception.UserNotFoundException;
+import danekerscode.socialmediaapi.mapper.ChannelMapper;
+import danekerscode.socialmediaapi.mapper.PostMapper;
 import danekerscode.socialmediaapi.model.Channel;
 import danekerscode.socialmediaapi.model.Post;
-import danekerscode.socialmediaapi.payload.request.ChannelRequest;
-import danekerscode.socialmediaapi.payload.request.PostRequest;
+import danekerscode.socialmediaapi.payload.request.ChannelDTO;
+import danekerscode.socialmediaapi.payload.request.PostDTO;
 import danekerscode.socialmediaapi.repository.ChannelRepository;
 import danekerscode.socialmediaapi.repository.PostRepository;
-import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.ChannelService;
 import danekerscode.socialmediaapi.service.PostService;
-import danekerscode.socialmediaapi.utils.Converter;
-import danekerscode.socialmediaapi.validate.CustomValidator;
+import danekerscode.socialmediaapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,15 +24,17 @@ public class ChannelServiceImpl
         implements ChannelService, PostService {
 
     private final ChannelRepository channelRepository;
-    private final UserRepository userRepository;
+    private final UserService  userService;
     private final PostRepository postRepository;
-    private final CustomValidator customValidator;
+    private final ChannelMapper channelMapper;
+    private final PostMapper postMapper;
 
 
     @Override
-    public void addPost(PostRequest postRequest) {
-        customValidator.validatePost(postRequest);
-        postRepository.save(Converter.toPost(postRequest, channelRepository.findById(postRequest.ownerChannelId()).get()));
+    public void addPost(PostDTO postDTO) {
+        postRepository.save(
+                postMapper.toPost(postDTO, getById(postDTO.ownerChannelId()))
+        );
     }
 
     @Override
@@ -48,11 +48,10 @@ public class ChannelServiceImpl
     }
 
     @Override
-    public void updatePost(PostRequest postRequest , Integer id) {
-        customValidator.validatePost(postRequest);
-        var post = postRepository.findById(id).orElseThrow();
-        post.setBody(postRequest.body());
-        post.setTitle(postRequest.title());
+    public void updatePost(PostDTO postDTO, Integer id) {
+        var post =getPostById(id);
+
+        postMapper.update(postDTO,post);
         postRepository.save(post);
     }
 
@@ -68,9 +67,11 @@ public class ChannelServiceImpl
     }
 
 
-    public Channel save(ChannelRequest request) {
-        customValidator.validateChannel(request);
-        return channelRepository.save(Converter.toChannel(request, userRepository.findById(request.owner()).get()));
+    public Channel save(ChannelDTO request) {
+        var owner = userService.getById(request.owner());
+        return channelRepository.save(
+                channelMapper.toChannel(request,owner)
+        );
     }
 
     @Override
@@ -79,28 +80,17 @@ public class ChannelServiceImpl
     }
 
     @Override
-    public Optional<Channel> getById(Integer id) {
-        return channelRepository.findById(id);
+    public Channel getById(Integer id) {
+        return channelRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Channel.class));
     }
 
     @Override
-    public void update(ChannelRequest channelRequest, Integer id) {
-        Channel channel = channelRepository.findById(id).orElseThrow(() -> new EntityPropertiesException("invalid id for channel"));
-        customValidator.validateChannel(channelRequest);
-        channel.setContent(ChannelContent.valueOf(channelRequest.content()));
-        channel.setName(channelRequest.name());
-        channel.setOwner(userRepository.findById(channelRequest.owner()).orElseThrow(UserNotFoundException::new));
-        channel.setDescription(channelRequest.description());
-
-        channel.setId(id);
-
+    public void update(ChannelDTO channelDTO, Integer id) {
+        Channel channel = getById(id);
+        channelMapper.update(channelDTO,channel);
         this.channelRepository.save(channel);
      }
-
-    @Override
-    public List<Channel> getAll() {
-        return channelRepository.findAll();
-    }
 
 
 }

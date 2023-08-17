@@ -1,0 +1,33 @@
+spring:
+  cloud:
+    aws:
+      region: us-east-01
+      credentials:
+        access-key: access
+        secret-key: access
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bootstrap-servers: localhost:9092
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: false
+    topics:
+      mail: mail_topic
+  datasource:
+    url: jdbc:postgresql://localhost:5432/social_media_api
+    password: postgres
+    username: postgres
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        default_schema: public

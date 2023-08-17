@@ -24,38 +24,6 @@ public class CustomValidator {
     private final ChannelRepository channelRepository;
     private final ChatRepository chatRepository;
 
-    public void validateUserRequest(UserRequest request) {
-        var sb = new StringBuilder();
-        if (repository.findUserByEmail(request.email()).isPresent())
-            sb.append("this email ").append(request.email()).append(" registered yet!");
-        if (!this.validateEmail(request.email()))
-            sb.append("please specify valid email");
-        if (validateGender(request.gender()))
-            sb.append("please specify valid gender!");
-        if (request.age() < 16)
-            sb.append("for registration age should be greater than 16!");
-        if (request.lastName().length() < 2)
-            sb.append("length of  lastname should be longest than 2!");
-        if (request.firstName().length() < 2)
-            sb.append("length of firstname should be longest than 2!");
-        if (!sb.isEmpty())
-            throw new RegistratoinException(sb.toString());
-    }
-
-    public void validateUpdateUserRequest(UserUpdateRequest request) {
-        var sb = new StringBuilder();
-        if (validateGender(request.gender()))
-            sb.append("please specify valid gender!");
-        if (request.age() < 16)
-            sb.append("for registration age should be greater than 16!");
-        if (request.lastName().length() < 2)
-            sb.append("length of  lastname should be longest than 2!");
-        if (request.firstName().length() < 2)
-            sb.append("length of firstname should be longest than 2!");
-        if (!sb.isEmpty())
-            throw new RegistratoinException(sb.toString());
-
-    }
 
     public boolean validateEmail(String email) {
         var regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
@@ -64,27 +32,17 @@ public class CustomValidator {
                 .matches();
     }
 
-    public void validateChannel(ChannelRequest request) {
-        var user = repository.findById(request.owner());
-        if (user.isEmpty())
-            throw new UserNotFoundException();
 
-        if (Arrays.stream(ChannelContent.values()).noneMatch(content ->
-                content.name().equals(request.content().toUpperCase(Locale.ROOT))))
-            throw new EntityPropertiesException("invalid content type of channel");
-
-    }
-
-    public void validatePost(PostRequest postRequest) {
-        if (postRequest.body().isEmpty() || postRequest.title().isEmpty()) {
+    public void validatePost(PostDTO postDTO) {
+        if (postDTO.body().isEmpty() || postDTO.title().isEmpty()) {
             throw new EntityPropertiesException("specify all properties");
         }
-        if (channelRepository.findById(postRequest.ownerChannelId()).isEmpty()) {
+        if (channelRepository.findById(postDTO.ownerChannelId()).isEmpty()) {
             throw new EntityPropertiesException("invalid id for owner channel id");
         }
     }
 
-    public void validateMessage(MessageRequest request) {
+    public void validateMessage(MessageDTO request) {
         if (chatRepository.findById(request.chatId()).isEmpty())
             throw new EntityPropertiesException("invalid chat id");
 

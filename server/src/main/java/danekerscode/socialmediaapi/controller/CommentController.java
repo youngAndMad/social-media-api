@@ -1,6 +1,6 @@
 package danekerscode.socialmediaapi.controller;
 
-import danekerscode.socialmediaapi.payload.request.CommentRequest;
+import danekerscode.socialmediaapi.payload.request.CommentDTO;
 import danekerscode.socialmediaapi.payload.response.CustomResponse;
 import danekerscode.socialmediaapi.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +19,14 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("new")
-    public ResponseEntity<?> doComment(@RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<?> doComment(@RequestBody CommentDTO commentDTO) {
         return new ResponseEntity<>(
                 CustomResponse.builder()
                         .status(CREATED)
                         .statusCode(CREATED.value())
                         .timeStamp(now())
                         .message("successfully commented")
-                        .data(Map.of("commentId", commentService.save(commentRequest).getId()))
+                        .data(Map.of("commentId", commentService.save(commentDTO).getId()))
                         .build(),
                 CREATED);
     }

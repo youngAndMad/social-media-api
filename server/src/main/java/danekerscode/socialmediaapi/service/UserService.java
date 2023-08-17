@@ -7,21 +7,23 @@ import danekerscode.socialmediaapi.payload.response.UserResponse;
 
 import java.util.Optional;
 
-public interface UserService extends ParentService<User> {
+public interface UserService {
 
-    User save(UserRequest userRequest);
+    User save(UserDTO userDTO);
 
-    void updatePassword(PasswordRequest passwordRequest);
-
-    Optional<User> findByCode(String code);
+    void updatePassword(PasswordUpdateDTO passwordUpdateDTO);
 
     UserResponse getPageToVisit(Integer id);
 
-    void updateStatus(StatusUpdateRequest request, Integer id);
+    void updateStatus(StatusUpdateDTO request, Integer id);
 
-    TokenResponse authenticate(AuthenticationRequest authenticationRequest);
+    TokenResponse authenticate(AuthenticationDTO authenticationDTO);
 
     TokenResponse createTokenResponse(String email, Integer userId);
 
-    void update(UserUpdateRequest userRequest, Integer id);
+    void update(UserDTO userDTO, Integer id);
+
+    User getById(Integer id);
+
+    void deleteById(Integer id);
 }

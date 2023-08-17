@@ -1,5 +1,7 @@
 package danekerscode.socialmediaapi.service.impl;
 
+import danekerscode.socialmediaapi.exception.EntityNotFoundException;
+import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.model.Address;
 import danekerscode.socialmediaapi.repository.AddressRepository;
 import danekerscode.socialmediaapi.service.AddressService;
@@ -16,17 +18,14 @@ public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
 
     @Override
-    public void deleteByID(Integer id) {
+    public void deleteById(Integer id) {
         addressRepository.deleteById(id);
     }
 
     @Override
-    public Optional<Address> getById(Integer id) {
-        return addressRepository.findById(id);
+    public void save(Address address) {
+        addressRepository.save(address);
     }
 
-    @Override
-    public List<Address> getAll() {
-        return addressRepository.findAll();
-    }
+
 }

@@ -1,6 +1,6 @@
 package danekerscode.socialmediaapi.controller;
 
-import danekerscode.socialmediaapi.payload.request.ChannelRequest;
+import danekerscode.socialmediaapi.payload.request.ChannelDTO;
 import danekerscode.socialmediaapi.service.ChannelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ public class ChannelController {
     private final ChannelService channelService;
 
     @PostMapping("new")
-    public ResponseEntity<?> add(@RequestBody ChannelRequest request){
+    public ResponseEntity<?> add(@RequestBody ChannelDTO request){
         channelService.save(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -30,8 +30,8 @@ public class ChannelController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<?> updateChannel(@PathVariable Integer id,
-                                           @RequestBody ChannelRequest channelRequest){
-        this.channelService.update(channelRequest,id);
+                                           @RequestBody ChannelDTO channelDTO){
+        this.channelService.update(channelDTO,id);
         return ResponseEntity.ok(ACCEPTED);
     }
 

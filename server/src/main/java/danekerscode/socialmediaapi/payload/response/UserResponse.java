@@ -1,6 +1,6 @@
 package danekerscode.socialmediaapi.payload.response;
 
-import danekerscode.socialmediaapi.constants.GENDER;
+import danekerscode.socialmediaapi.constants.Gender;
 import danekerscode.socialmediaapi.model.Channel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ public class UserResponse {
     private Integer id;
     private String firstName;
     private String lastName;
-    private GENDER gender;
+    private Gender gender;
     private Integer age;
     private String imageURL;
     private String email;

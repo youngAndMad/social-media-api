@@ -164,7 +164,7 @@ The app defines following CRUD APIs.
 }
 ```
 
-##### <section id="passwordRequest"> Password Request </section>
+##### <section id="passwordUpdateDTO"> Password Request </section>
 ```json
 {
 	"code": "codeFromServer",
@@ -184,7 +184,7 @@ The app defines following CRUD APIs.
 }
 ```
 
-##### <a id="channelRequest">Channel request</a>
+##### <a id="channelDTO">Channel request</a>
 ```json
 {
 	"name" : "Speed Cubing",
@@ -194,7 +194,7 @@ The app defines following CRUD APIs.
 }
 ```
 
-##### <a id="postRequest">Post Request</a>
+##### <a id="postDTO">Post Request</a>
 ```json
 {
 	"title" : "My Day",
@@ -204,7 +204,7 @@ The app defines following CRUD APIs.
 ```
 
 
-##### <a id="messageRequest">Message Request</a>
+##### <a id="messageDTO">Message Request</a>
 ```json
 {
 	"text" : "Hello world from Danekerscode",
@@ -221,7 +221,7 @@ The app defines following CRUD APIs.
 }
 ```
 
-##### <a id="commentRequest"> Comment Request</a>
+##### <a id="commentDTO"> Comment Request</a>
 ```json
 {
 	"comment" : "Great post"

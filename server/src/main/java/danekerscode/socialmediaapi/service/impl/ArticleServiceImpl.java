@@ -1,5 +1,6 @@
 package danekerscode.socialmediaapi.service.impl;
 
+import danekerscode.socialmediaapi.exception.EntityNotFoundException;
 import danekerscode.socialmediaapi.model.Article;
 import danekerscode.socialmediaapi.repository.ArticleRepository;
 import danekerscode.socialmediaapi.service.ArticleService;
@@ -23,8 +24,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Optional<Article> getById(Integer id) {
-        return articleRepository.findById(id);
+    public Article getById(Integer id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Article.class));
     }
 
     @Override
@@ -42,11 +44,6 @@ public class ArticleServiceImpl implements ArticleService {
             System.out.println(e.getMessage().toUpperCase());
         }
         return null;
-    }
-
-    @Override
-    public void savaAll(List<Article> articles) {
-        articles.forEach(this::save);
     }
 
 }

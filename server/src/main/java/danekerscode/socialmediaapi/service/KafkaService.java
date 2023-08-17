@@ -1,5 +1,7 @@
 package danekerscode.socialmediaapi.service;
 
+import danekerscode.socialmediaapi.utils.KafkaMailMessage;
+
 public interface KafkaService {
-    void sendEmailRequest(String email , String topic);
+    void sendEmailRequest(KafkaMailMessage mailMessage);
 }

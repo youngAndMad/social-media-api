@@ -2,9 +2,11 @@ package danekerscode.socialmediaapi.service.impl;
 
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
+import danekerscode.socialmediaapi.mapper.NotificationMapper;
 import danekerscode.socialmediaapi.repository.NotificationRepository;
 import danekerscode.socialmediaapi.repository.UserRepository;
 import danekerscode.socialmediaapi.service.NotificationService;
+import danekerscode.socialmediaapi.service.UserService;
 import danekerscode.socialmediaapi.utils.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,8 +14,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
+
     private final NotificationRepository notificationRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
+private final NotificationMapper notificationMapper;
 
     @Override
     public Boolean setChecked(Integer id) {
@@ -27,7 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public Boolean send(Integer id , String body) {
         notificationRepository.save(
-                Converter.toNotification(body , userRepository.findById(id).orElseThrow(UserNotFoundException::new))
+              notificationMapper.toNotification(body,userService.getById(id))
         );
         return true;
     }

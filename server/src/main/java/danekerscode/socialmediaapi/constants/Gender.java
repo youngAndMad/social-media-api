@@ -1,3 +1,3 @@
 package danekerscode.socialmediaapi.constants;
 
-public enum GENDER {MALE ,FEMALE}
+public enum Gender {MALE ,FEMALE}

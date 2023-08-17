@@ -1,11 +1,13 @@
 package danekerscode.socialmediaapi.service;
 
 import danekerscode.socialmediaapi.model.Message;
-import danekerscode.socialmediaapi.payload.request.MessageRequest;
-import danekerscode.socialmediaapi.payload.request.UpdateMessageRequest;
+import danekerscode.socialmediaapi.payload.request.MessageDTO;
+import danekerscode.socialmediaapi.payload.request.UpdateMessageDTO;
 
-public interface MessageService extends ParentService<Message>{
-    Message save(MessageRequest messageRequest);
+public interface MessageService {
+    Message save(MessageDTO messageDTO);
 
-    void update(UpdateMessageRequest request, Integer id);
+    void update(UpdateMessageDTO request, Integer id);
+
+    void deleteById(Integer id);
 }

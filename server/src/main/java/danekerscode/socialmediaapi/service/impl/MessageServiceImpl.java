@@ -1,20 +1,23 @@
 package danekerscode.socialmediaapi.service.impl;
 
+import danekerscode.socialmediaapi.exception.EntityNotFoundException;
 import danekerscode.socialmediaapi.exception.EntityPropertiesException;
 import danekerscode.socialmediaapi.exception.UserNotFoundException;
+import danekerscode.socialmediaapi.mapper.MessageMapper;
 import danekerscode.socialmediaapi.model.Message;
-import danekerscode.socialmediaapi.payload.request.MessageRequest;
-import danekerscode.socialmediaapi.payload.request.UpdateMessageRequest;
+import danekerscode.socialmediaapi.payload.request.MessageDTO;
+import danekerscode.socialmediaapi.payload.request.UpdateMessageDTO;
 import danekerscode.socialmediaapi.repository.ChatRepository;
 import danekerscode.socialmediaapi.repository.MessageRepository;
 import danekerscode.socialmediaapi.repository.UserRepository;
+import danekerscode.socialmediaapi.service.ChatService;
 import danekerscode.socialmediaapi.service.MessageService;
+import danekerscode.socialmediaapi.service.UserService;
 import danekerscode.socialmediaapi.utils.Converter;
 import danekerscode.socialmediaapi.validate.CustomValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,42 +26,33 @@ import java.util.Optional;
 public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
-    private final UserRepository userRepository;
-    private final ChatRepository chatRepository;
-    private final CustomValidator customValidator;
+    private final UserService userService;
+    private final ChatService chatService;
+    private final MessageMapper messageMapper;
+
 
     @Override
-    public Message save(MessageRequest request) {
-        customValidator.validateMessage(request);
+    public Message save(MessageDTO request) {
+
         return messageRepository.save(
-                Converter.toMessage(
+                messageMapper.toMessage(
                         request,
-                        userRepository.findById(request.sender()).orElseThrow(UserNotFoundException::new),
-                        chatRepository.findById(request.chatId()).orElseThrow(EntityNotFoundException::new))
+                        userService.getById(request.sender()),
+                        chatService.getById(request.chatId())
+                )
         );
     }
 
     @Override
-    public void update(UpdateMessageRequest request, Integer id) {
-            var msg = messageRepository.findById(id).orElseThrow(() -> new EntityPropertiesException("invalid message id"));
-            msg.setText(request.updatedMessage());
-            msg.setId(id);
-            messageRepository.save(msg);
+    public void update(UpdateMessageDTO request, Integer id) {
+        var msg = messageRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Message.class));
+        messageMapper.update(msg,request);
+        messageRepository.save(msg);
     }
 
     @Override
-    public void deleteByID(Integer id) {
+    public void deleteById(Integer id) {
         messageRepository.deleteById(id);
-    }
-
-    @Override
-    public Optional<Message> getById(Integer id) {
-        return messageRepository.findById(id);
-    }
-
-    @Override
-    public List<Message> getAll() {
-        return messageRepository.findAll();
     }
 
 }

@@ -2,6 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { Article } from "../domain/model/Article";
+import { API } from "../config/config";
 
 @Injectable({
   providedIn: "root"
@@ -9,6 +10,7 @@ import { Article } from "../domain/model/Article";
 export class ArticleService {
 
   private http = inject(HttpClient);
+  private ARTICLE_URL = `${API}/article`;
 
   constructor() {
   }
@@ -85,5 +87,26 @@ export class ArticleService {
       content: "Lorem Ipsum - это текст-\"рыба\", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной \"рыбой\" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.",
       publishedAt: "2023-08-20T09:00:00"
     });
+  }
+
+  add(
+    req: any
+  ): Observable<any> {
+    return this.http
+      .post(this.ARTICLE_URL, req);
+  }
+
+  delete(
+    id: number
+  ): Observable<any> {
+    return this.http
+      .delete(`${this.ARTICLE_URL}/${id}`);
+  }
+
+  getById(
+    id: number
+  ): Observable<any> {
+    return this.http
+      .get(`${this.ARTICLE_URL}/${id}`);
   }
 }

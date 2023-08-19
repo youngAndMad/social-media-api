@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Gender } from "../../domain/enums/Gender";
-import { AuthService } from "../../service/auth.service";
+import { UserService } from "../../service/user.service";
 
 @Component({
   selector: "app-registration",
@@ -15,7 +15,7 @@ export class RegistrationComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService:AuthService
+    private userService: UserService
   ) {
     this.registrationFrom = formBuilder.group({
       firstName: ["", [Validators.required,
@@ -36,23 +36,23 @@ export class RegistrationComponent {
     });
   }
 
-  registration(){
-    this.authService
+  registration() {
+    this.userService
       .register(this.registrationFrom.value)
-      .subscribe(console.log)
+      .subscribe(console.log);
   }
 
-  get addressForm(){
-    return this.registrationFrom.get('address') as FormGroup
+  get addressForm() {
+    return this.registrationFrom.get("address") as FormGroup;
   }
 
-  get form(){
-    return this.registrationFrom
+  get form() {
+    return this.registrationFrom;
   }
 
-  canContinue():boolean{
-    return this.registrationFrom.get('firstName')!.valid &&
-      this.registrationFrom.get('lastName')!.valid;
+  canContinue(): boolean {
+    return this.registrationFrom.get("firstName")!.valid &&
+      this.registrationFrom.get("lastName")!.valid;
   }
 
 }

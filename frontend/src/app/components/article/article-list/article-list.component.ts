@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { ArticleService } from "../../../service/article.service";
 import { Article } from "../../../domain/model/Article";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-article-list",
@@ -9,6 +10,8 @@ import { Article } from "../../../domain/model/Article";
 })
 export class ArticleListComponent implements OnInit {
   private articleService = inject(ArticleService);
+  private router = inject(Router);
+
   articles: Article[];
 
   ngOnInit(): void {
@@ -18,8 +21,10 @@ export class ArticleListComponent implements OnInit {
   }
 
 
-  openLink(url:string){
-    window.open(url,'_blank')
+  openArticle(article: Article) {
+    console.log(article);
+    this.router.navigate(["/article", article.id]);
+
   }
 
 }

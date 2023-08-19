@@ -14,39 +14,26 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatListModule } from "@angular/material/list";
 import { MatMenuModule } from "@angular/material/menu";
 
+const libs = [
+  CommonModule,
+  BrowserAnimationsModule,
+  MatCardModule,
+  MatInputModule,
+  MatIconModule,
+  MatStepperModule,
+  MatButtonModule,
+  MatOptionModule,
+  MatSelectModule,
+  MatCheckboxModule,
+  MatSidenavModule,
+  MatToolbarModule,
+  MatListModule,
+  MatMenuModule,
+]
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatInputModule,
-    MatIconModule,
-    MatStepperModule,
-    MatButtonModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatListModule,
-    MatMenuModule,
-  ],
-  exports:[
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatInputModule,
-    MatIconModule,
-    MatStepperModule,
-    MatButtonModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatListModule,
-    MatMenuModule,
-  ]
+  imports: [libs],
+  exports:[libs]
 })
 export class MaterialModule { }

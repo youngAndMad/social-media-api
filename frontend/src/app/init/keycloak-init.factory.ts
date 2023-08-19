@@ -1,4 +1,5 @@
 import { KeycloakService } from "keycloak-angular";
+import * as env from "../config/config";
 
 export function initializeKeycloak(
   keycloak: KeycloakService
@@ -6,15 +7,15 @@ export function initializeKeycloak(
   return () =>
     keycloak.init({
         config: {
-          url: "http://localhost:8080" + "/auth",
-          realm: "master",
-          clientId: "my_client"
+          url: env.KEYCLOAK_URL,
+          realm: env.KEYCLOAK_REALM,
+          clientId: env.KEYCLOAK_CLIENT
         },
         initOptions: {
           redirectUri: "http://localhost:4200",
           checkLoginIframe: false
         },
-        bearerPrefix: "Bearer ",
+        bearerPrefix: env.KEYCLOAK_BEARER_PREFIX,
         loadUserProfileAtStartUp: true
       }
     );

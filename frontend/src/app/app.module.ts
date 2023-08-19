@@ -11,6 +11,9 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { MaterialModule } from "./material/material.module";
 import { FlexModule } from "./flex/flex.module";
+import { ArticleListComponent } from './components/article/article-list/article-list.component';
+import { ArticlePageComponent } from './components/article/article-page/article-page.component';
+import { FooterComponent } from './components/navigation/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,9 @@ import { FlexModule } from "./flex/flex.module";
     RegistrationComponent,
     HeaderComponent,
     SidenavComponent,
+    ArticleListComponent,
+    ArticlePageComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

@@ -21,7 +21,6 @@ export class AppComponent implements OnInit {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.currentRoute = this.activatedRoute.root.firstChild!.snapshot.routeConfig!.path!;
-        console.log(this.currentRoute)
       });
   }
 }

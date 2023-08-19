@@ -1,0 +1,5 @@
+export enum FileAddress {
+  USER_AVATAR = "USER_AVATAR",
+  CHANNEL_AVATAR = "CHANNEL_AVATAR",
+  POST_IMAGE = "POST_IMAGE"
+}

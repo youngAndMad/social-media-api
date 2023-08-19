@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,11 +18,13 @@ public class StorageController {
 
     private final StorageService storageService;
 
-    @PostMapping("/save/{address}/{id}")
+    @PostMapping(consumes = {
+            MediaType.MULTIPART_FORM_DATA_VALUE
+    })
     public ResponseEntity<?> save(
-            @PathVariable FileAddress address,
-            @PathVariable Integer id,
-            @RequestBody @NonNull MultipartFile file
+            @RequestParam FileAddress address,
+            @RequestParam Integer id,
+            @RequestParam @NonNull MultipartFile file
     ) {
         return ResponseEntity
                 .ok(this.storageService.uploadFile(file, address, id) ? HttpStatus.ACCEPTED

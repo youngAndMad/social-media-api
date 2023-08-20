@@ -14,6 +14,8 @@ import { FlexModule } from "./flex/flex.module";
 import { ArticleListComponent } from './components/article/article-list/article-list.component';
 import { ArticlePageComponent } from './components/article/article-page/article-page.component';
 import { FooterComponent } from './components/navigation/footer/footer.component';
+import { ProfileComponent } from './components/user/profile/profile.component';
+import { EditProfileComponent } from './components/user/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { FooterComponent } from './components/navigation/footer/footer.component
     ArticleListComponent,
     ArticlePageComponent,
     FooterComponent,
+    ProfileComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,
